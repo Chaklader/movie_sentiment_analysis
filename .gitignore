@@ -1,0 +1,115 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.idea/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+.venv
+env.bak/
+venv.bak/
+
+# ML specific
+*.h5
+*.pkl
+*.model
+saved_models/
+checkpoints/
+*.ckpt
+*.pth
+*.pt
+*.bin
+weights/
+logs/
+runs/
+tensorboard/
+
+# Data
+data/
+datasets/
+*.csv
+*.dat
+*.npy
+*.npz
+*.json
+*.jsonl
+*.db
+*.sqlite
+*.hdf5
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
+*.swo
+.vs/
+*.sublime-project
+*.sublime-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.log
+.directory
+
+# Project specific
+config.ini
+secrets.yaml
+*.config
+.env*
+.cache
+*.bak
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.coverage.*
+coverage.xml
+*.cover
+
+# Documentation
+docs/_build/
+site/
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Images and media
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.mp4
+*.avi
+*.mov
