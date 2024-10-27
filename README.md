@@ -1,4 +1,4 @@
-# Recurrent Neural Networks (RNN)
+# Introduction to Recurrent Neural Networks (RNN)
 
 ## 1. Introduction
 
@@ -1351,6 +1351,1052 @@ work as well for tasks that rely heavily on semantic meaning, since they do not 
 PyTorch, you can generate charNgram embeddings using the torchtext package. The torchtext.vocab.CharNGram class allows
 you to generate character n-grams for a given text corpus, and the resulting n-grams can be used to generate charNgram
 embeddings for individual words.
+
+# Introduction to LSTM
+
+Lesson Outline
+In this lesson, we will cover the following topics:
+
+LSTM Overview
+LSTM Architecture and Gates
+
+By the end of the lesson, you'll be able to:
+
+1. Explain how LSTMs overcome the limitations of RNNs
+2. Implement the LSTM architecture
+
+The problem with RNNs is that memory stored in an RNN can be effective short-term memory. This is due to the "Vanishing
+Gradient Problem." The Vanishing Gradient Problem happens when the gradient of a deep layer of the neural network is "
+diluted" and has a reduced effect on the network. This is due to the nature of the activation functions of the RNN that
+can diminish the effect of the gradients of the deeper layer over time.
+
+The LSTM solves the problem by introducing an operation to maintain the long-term memory of the network. We will learn
+about these gates in subsequent lessons.
+
+Long Short-Term Memory Cells, (LSTM)(opens in a new tab) give a solution to the vanishing gradient problem, by helping
+us apply networks that have temporal dependencies. They were proposed in 1997 by Sepp Hochreiter(opens in a new tab) and
+Jürgen Schmidhuber(opens in a new tab)
+
+If we look closely at the RNN neuron, we see that we have simple linear combinations (with or without an activation
+function). We can also see that we have a single addition.
+
+Zooming in on the neuron, we can graphically see this in the following configuration:
+
+RNN Neuron Explanation
+At the center, there is a large blue circle representing the RNN cell with the label "Phi," indicating a non-linear
+activation function. Surrounding the circle are inputs and outputs.
+
+To the left, "S-bar-t" represents the previous hidden state multiplied by the weight matrix "W-S" and combines with an
+addition operation, shown by a plus sign inside the cell.
+
+Below, "x-bar-t-plus-1" represents the next input state, multiplied by the weight matrix "W-X." These values feed into
+the cell to produce the next hidden state, labeled as "x-bar-t-plus-1," which exits to the right and is multiplied by "
+W-S."
+
+
+<br>
+
+![image info](images/rnn_neuron.png)
+
+<br>
+
+At the top, "y-bar-t-plus-1" shows the next output, computed from the current state using the weight matrix "W-Y."
+
+The diagram highlights the flow of information and the transformation of values within the RNN structure through various
+mathematical operations, focusing on how input states, hidden states, and output states interact with weights.
+
+The LSTM cell is a bit more complicated. If we zoom in on the cell, we can see that the mathematical configuration is
+the following:
+
+LSTM Cell Explanation
+The diagram is enclosed within a dark rectangle representing the LSTM unit. On the left, the input "x-sub-t" enters the
+cell from the bottom left. Several key operations occur within the cell, including the use of the sigmoid function,
+represented by "sigma," and the hyperbolic tangent function, represented by "tanh," both essential for controlling
+information flow.
+
+At the top, the previous cell state "S-sub-t" is depicted flowing through, being modified by operations involving
+multiplication and addition. The cell has several gates: the forget gate, input gate, and output gate, each interacting
+with the input "x-sub-t" and the previous state to control which information to store or discard. There are arrows
+showing information flow through the LSTM, including multiplications and additions, with multiple paths converging or
+splitting based on the gate operations.
+
+
+<br>
+
+![image info](images/lstm_neuron.png)
+
+<br>
+
+The activation functions are visually separated, with "tanh" applied towards the right side and "sigma" present in the
+input pathways. The output of the LSTM, represented by arrows exiting to the right, combines information from the gates
+and the cell state, forming the cell’s output. The entire structure illustrates the complex interplay between the gates
+and the hidden state within an LSTM network.
+
+The LSTM cell allows a recurrent system to learn over many time steps without the fear of losing information due to the
+vanishing gradient problem. It is fully differentiable, therefore allowing us to use backpropagation when updating the
+weights easily.
+
+### Basics of LSTM
+
+In this video, we learned the basics of the LSTM. We have listed them below.
+
+Inputs
+
+1. Long Term Memory
+2. Short Term Memory
+3. Input Vector (Event)
+
+Gates
+
+1. Forget Gate
+2. Learn Gate
+3. Remember Gate
+4. Use Gate
+
+Outputs
+
+1. New Long-Term Memory
+2. New Short-Term Memory
+
+<br>
+
+![image info](images/prediction.png)
+
+<br>
+
+
+<br>
+
+![image info](images/gate.png)
+
+<br>
+
+
+<br>
+
+![image info](images/gate_1.png)
+
+<br>
+
+# RNN Lecture Notes: Gates in LSTM Architecture
+
+## Introduction to LSTM Gates
+
+Long Short-Term Memory (LSTM) networks use a system of gates to control information flow. These gates help solve the
+vanishing gradient problem and allow the network to learn long-term dependencies.
+
+## 1. Forget Gate
+
+The forget gate decides what information to discard from the cell state.
+
+### Mathematical Representation:
+
+```textmate
+ft = σ(Wf · [ht-1, xt] + bf)
+```
+
+Where:
+
+- ft: Forget gate output (0-1)
+- σ: Sigmoid function
+- Wf: Weight matrix
+- ht-1: Previous hidden state
+- xt: Current input
+- bf: Bias term
+
+### Purpose:
+
+- Filters information from cell state
+- Values close to 0: forget
+- Values close to 1: keep
+
+## 2. Learn Gate (Input Gate)
+
+Determines which new information will be stored in the cell state.
+
+### Mathematical Representation:
+
+```textmate
+it = σ(Wi · [ht-1, xt] + bi)
+C̃t = tanh(Wc · [ht-1, xt] + bc)
+```
+
+Where:
+
+- it: Input gate output
+- C̃t: Candidate values
+- Wi, Wc: Weight matrices
+- bi, bc: Bias terms
+
+### Purpose:
+
+- Controls new information flow
+- Creates candidate values
+- Scales new information importance
+
+## 3. Remember Gate (Cell State Update)
+
+Updates the cell state by combining forget gate and learn gate outputs.
+
+### Mathematical Representation:
+
+```textmate
+Ct = ft * Ct-1 + it * C̃t
+```
+
+Where:
+
+- Ct: New cell state
+- Ct-1: Previous cell state
+- *: Element-wise multiplication
+
+### Purpose:
+
+- Maintains long-term memory
+- Combines old and new information
+- Controls information flow through time
+
+## 4. Use Gate (Output Gate)
+
+Controls what parts of the cell state will be output.
+
+### Mathematical Representation:
+
+```textmate
+ot = σ(Wo · [ht-1, xt] + bo)
+ht = ot * tanh(Ct)
+```
+
+Where:
+
+- ot: Output gate values
+- ht: Hidden state output
+- Wo: Weight matrix
+- bo: Bias term
+
+### Purpose:
+
+- Filters cell state output
+- Creates final output
+- Controls information visibility
+
+## Gate Interactions
+
+### Complete LSTM Step:
+
+1. Forget: Remove irrelevant information
+2. Learn: Add new information
+3. Remember: Update cell state
+4. Use: Create output
+
+```textmate
+# Complete LSTM Forward Pass
+def lstm_forward(x_t, h_prev, c_prev):
+    # Forget Gate
+    f_t = sigmoid(dot(W_f, concat(h_prev, x_t)) + b_f)
+    
+    # Input Gate
+    i_t = sigmoid(dot(W_i, concat(h_prev, x_t)) + b_i)
+    c_tilde = tanh(dot(W_c, concat(h_prev, x_t)) + b_c)
+    
+    # Cell State Update
+    c_t = f_t * c_prev + i_t * c_tilde
+    
+    # Output Gate
+    o_t = sigmoid(dot(W_o, concat(h_prev, x_t)) + b_o)
+    h_t = o_t * tanh(c_t)
+    
+    return h_t, c_t
+```
+
+## Practical Considerations
+
+### Advantages:
+
+1. Solves vanishing gradient
+2. Better long-term memory
+3. Selective information retention
+
+### Challenges:
+
+1. Computational complexity
+2. More parameters to train
+3. Memory requirements
+
+### Best Practices:
+
+1. Use proper initialization
+2. Apply dropout carefully
+3. Consider bidirectional LSTM
+4. Use gradient clipping
+
+## Applications:
+
+- Sequence prediction
+- Machine translation
+- Speech recognition
+- Time series forecasting
+
+## Code Example for Gate Visualization:
+
+```textmate
+def visualize_gates(lstm_layer, input_sequence):
+    # Get gate activations
+    forget_acts = lstm_layer.get_forget_gate_values(input_sequence)
+    input_acts = lstm_layer.get_input_gate_values(input_sequence)
+    cell_acts = lstm_layer.get_cell_state_values(input_sequence)
+    output_acts = lstm_layer.get_output_gate_values(input_sequence)
+    
+    # Plot activations
+    plt.figure(figsize=(15, 10))
+    plt.subplot(4,1,1)
+    plt.title('Gate Activations Over Time')
+    plt.plot(forget_acts, label='Forget Gate')
+    plt.plot(input_acts, label='Input Gate')
+    plt.plot(cell_acts, label='Cell State')
+    plt.plot(output_acts, label='Output Gate')
+    plt.legend()
+    plt.show()
+```
+
+# Quiz Question: LSTM Memory Update Mechanism
+
+**Question:**
+The Long Term Memory and Short Term Memory are updated by a method where...
+(Select the response that best completes the sentence)
+
+**Options:**
+
+1. The Remember Gate takes in the LTM & STM to determine the new LTM. The USE gate performs the same operation for the
+   STM. ✅
+2. The USE takes in the LTM & STM to determine the new LTM. The Remember gate performs the same operation for the LTM.
+3. The Long Term Memory is multiplied against the Short Term Memory using a weight matrix.
+
+**Correct Answer:** Option 1: The Remember Gate takes in the LTM & STM to determine the new LTM. The USE gate performs
+the same operation for the STM. ✅
+
+**Explanation:**
+
+In LSTM networks, the memory update process works as follows:
+
+1. **Remember Gate (Cell State Update)**:
+    - Takes both Long Term Memory (LTM/Cell State) and Short Term Memory (STM/Hidden State)
+    - Formula: `Ct = ft * Ct-1 + it * C̃t`
+    - Determines what information to keep and what to update in the LTM
+
+2. **USE Gate (Output Gate)**:
+    - Controls the Short Term Memory update
+    - Formula: `ht = ot * tanh(Ct)`
+    - Filters the cell state to create the new hidden state (STM)
+
+The process is sequential:
+
+1. Remember Gate updates LTM first
+2. USE Gate then uses the updated LTM to create new STM
+
+This is why Option 1 is correct - it accurately describes how:
+
+- Remember Gate handles LTM updates
+- USE Gate handles STM updates
+- Both gates work together but have distinct roles in memory management
+
+Option 2 is incorrect because it reverses the roles of the gates, and Option 3 oversimplifies the complex gating
+mechanism of LSTMs.
+
+# Quiz Question: Important Components of LSTM Architecture
+
+**Question:**
+Check the important pieces of an LSTM architecture. (Multiple correct responses)
+
+**Options and Their Status:**
+
+1. ✅ The inputs of the input vector, LTM, and STM
+2. ❌ The modulation factor
+3. ✅ Forget, Learn, Remember and Use Gates
+4. ❌ The normalization gate
+5. ✅ The Hidden State
+6. ✅ The outputs of the LTM and STM
+7. ✅ The Cell State
+
+**Explanation:**
+
+Let's analyze each component and why it's correct or incorrect:
+
+**Correct Components:**
+
+1. **Input Vector, LTM, and STM**
+    - Essential inputs for LSTM processing
+    - LTM (Long-Term Memory) stores long-term dependencies
+    - STM (Short-Term Memory) handles immediate context
+
+2. **Four Gates (Forget, Learn, Remember, Use)**
+    - Forget Gate: Decides what to discard
+    - Learn Gate: Determines new information to store
+    - Remember Gate: Updates cell state
+    - Use Gate: Controls output information
+
+3. **Hidden State**
+    - Represents short-term memory
+    - Carries immediate context information
+    - Essential for sequence processing
+
+4. **LTM and STM Outputs**
+    - Critical for information flow
+    - Enables both short and long-term memory retention
+    - Necessary for next time step processing
+
+5. **Cell State**
+    - Core component for maintaining long-term dependencies
+    - Acts as the memory highway through time
+    - Essential for solving vanishing gradient problem
+
+**Incorrect Components:**
+
+1. **Modulation Factor**
+    - Not a standard LSTM component
+    - Might be confused with gate multipliers
+
+2. **Normalization Gate**
+    - Not part of standard LSTM architecture
+    - While normalization can be used in LSTMs, it's not a gate component
+
+This distinction shows that LSTM's power comes from its carefully designed memory and gate mechanisms, not from
+additional processing components.
+
+
+<br>
+
+![image info](images/rnn_architecture.png)
+
+<br>
+
+
+<br>
+
+![image info](images/lstm_architecture.png)
+
+<br>
+
+### Learn Gate
+
+The output of the *Learn Gate* is $N_ti_t$ where:
+
+Equation 1:
+
+$N_t = \tanh(W_n[STM_{t-1}, E_t] + b_n)$
+
+$i_t = \sigma(W_i[STM_{t-1}, E_t] + b_i)$
+
+Note: The equation shows a Learn Gate equation where:
+
+- $N_t$ is computed using hyperbolic tangent (tanh) activation
+- $i_t$ is computed using sigmoid ($\sigma$) activation
+- Both use weights ($W$) and biases ($b$) with previous short-term memory ($STM_{t-1}$) and current input ($E_t$)
+
+<br>
+
+![image info](images/learn_gate.png)
+
+<br>
+
+### Forget Gate
+
+## Forget Gate
+
+The output of the Forget Gate is $LTM_{t-1}f_t$ where:
+
+**Equation 2:**
+$$f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$$
+
+
+<br>
+
+![image info](images/forget_gate.png)
+
+<br>
+
+### Remember Gate
+
+## Remember Gate
+
+The output of the Remember Gate is:
+
+**Equation 3:**
+$$LTM_{t-1}f_t + N_ti_t$$
+
+$(N_t, i_t \text{ and } f_t \text{ are calculated in equations 1 and 2})$
+
+
+<br>
+
+![image info](images/remember_gate.png)
+
+<br>
+
+### Use Gate
+
+## Use Gate
+
+The output of the Use Gate is $U_tV_t$ where:
+
+**Equation 4:**
+$$U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$$
+$$V_t = \sigma(W_v[STM_{t-1}, E_t] + b_v)$$
+
+These equations represent the mathematical formulation of how information flows through each gate in an LSTM cell, with:
+
+- $\sigma$ representing the sigmoid function
+- $\tanh$ representing the hyperbolic tangent function
+- $W$ terms representing weight matrices
+- $b$ terms representing bias vectors
+- $LTM$ representing Long Term Memory
+- $STM$ representing Short Term Memory
+- $E_t$ representing the input at time t
+
+<br>
+
+![image info](images/use_gate.png)
+
+<br>
+
+# Quiz: LSTM Gate Functions
+
+**Question:** Match each LSTM gate to its function.
+
+| Gate              | Function                                                  | Explanation                                                                                                                                                                   |
+|-------------------|-----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| The Forget Gate   | Chooses which parts of the long-term memory are important | Controls what information should be discarded from the cell state using a sigmoid function to output values between 0 (forget) and 1 (keep)                                   |
+| The Learn Gate    | Updates the short-term memory with new information        | Creates and controls what new information should be stored in the cell state, using both a sigmoid layer to decide what to update and a tanh layer to create candidate values |
+| The Remember Gate | Outputs the long-term memory                              | Combines the filtered old memory (from Forget Gate) with potential new memories (from Learn Gate) to update the cell state                                                    |
+| The Use Gate      | Outputs the short-term memory                             | Decides what parts of the cell state will be output as the hidden state, using a filtered version through tanh and sigmoid functions                                          |
+
+**Detailed Explanation:**
+
+1. **Forget Gate**
+    - Primary function: Information filtering
+    - Equation: $f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$
+    - Acts as the memory "clearance" mechanism
+
+2. **Learn Gate**
+    - Primary function: Information acquisition
+    - Updates STM with new data
+    - Essential for incorporating new information
+
+3. **Remember Gate**
+    - Primary function: Memory persistence
+    - Equation: $LTM_{t-1}f_t + N_ti_t$
+    - Manages long-term information storage
+
+4. **Use Gate**
+    - Primary function: Output control
+    - Equation: $U_tV_t$ where $U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$
+    - Controls information flow to the next layer
+
+These gates work together to create LSTM's ability to maintain and manage both short-term and long-term dependencies in
+sequential data.
+
+# Introduction to Transformers
+
+# Transformer Model Neural Networks Lecture Notes
+
+## 1. Introduction to Transformers
+
+Transformers are a type of neural network architecture introduced in the paper "Attention is All You Need" (Vaswamalan
+et al., 2017).
+
+A Transformer is a type of neural network that revolutionized how computers process language and other sequential data.
+Think of it like having multiple readers looking at a book simultaneously, where each reader focuses on different parts
+of the text and can instantly connect related information, no matter how far apart it appears. Unlike older models (like
+RNNs and LSTMs) that read text word by word like a human, Transformers can look at an entire sequence at once through a
+mechanism called "attention." This attention mechanism allows the model to weigh the importance of different words in
+relation to each other, similar to how we understand that "the dog chased its tail" connects "its" to "dog"
+automatically. The real power comes from having multiple "attention heads" that can each focus on different types of
+relationships in the text simultaneously - some might focus on grammar, others on subject-object relationships, and
+others on broader context. This parallel processing and ability to handle long-range dependencies made Transformers the
+foundation for powerful language models like BERT and GPT.
+
+### Key Features
+
+- Based entirely on attention mechanisms
+- Eliminates recurrence and convolutions
+- Enables parallel processing
+- Better handling of long-range dependencies
+
+## 2. Architecture Components
+
+### 2.1 Overall Structure
+
+```text
+Input -> Embedding -> Encoder Stack -> Decoder Stack -> Output
+```
+
+### 2.2 Main Components
+
+1. **Encoder**
+    - Multiple identical layers
+    - Each layer has:
+        - Multi-head attention
+        - Feed-forward network
+        - Layer normalization
+        - Residual connections
+
+2. **Decoder**
+    - Similar to encoder but with additional layer
+    - Components:
+        - Masked multi-head attention
+        - Encoder-decoder attention
+        - Feed-forward network
+
+## 3. Key Mechanisms
+
+### 3.1 Multi-Head Attention
+
+```textmate
+def multihead_attention(query, key, value, num_heads):
+    # Split processing into h heads
+    attention_per_head = []
+    for i in range(num_heads):
+        head = scaled_dot_product_attention(
+            Q=query,
+            K=key,
+            V=value
+        )
+        attention_per_head.append(head)
+    return concatenate(attention_per_head)
+```
+
+#### Formula:
+
+$$Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
+
+### 3.2 Positional Encoding
+
+- Adds position information to embeddings
+- Uses sine and cosine functions:
+
+```textmate
+PE(pos, 2
+i) = sin(pos / 10000 ^ (2i / d_model))
+PE(pos, 2
+i + 1) = cos(pos / 10000 ^ (2i / d_model))
+```
+
+## 4. Training Process
+
+### 4.1 Training Components
+
+1. Input Processing
+    - Tokenization
+    - Embedding
+    - Positional encoding
+
+2. Loss Calculation
+
+   ```textmate
+   loss = cross_entropy(predictions, targets)
+   ```
+
+3. Optimization
+    - Adam optimizer
+    - Learning rate with warmup
+
+### 4.2 Training Techniques
+
+1. Label Smoothing
+2. Dropout
+3. Layer Normalization
+4. Residual Connections
+
+## 5. Advanced Concepts
+
+### 5.1 Self-Attention
+
+- Allows input to attend to itself
+- Formula:
+  $$SelfAttention(X) = Attention(XW^Q, XW^K, XW^V)$$
+
+### 5.2 Cross-Attention
+
+- Connects encoder and decoder
+- Used in encoder-decoder attention layer
+
+## 6. Practical Applications
+
+### 6.1 Common Use Cases
+
+1. Machine Translation
+2. Text Generation
+3. Document Summarization
+4. Question Answering
+
+### 6.2 Implementation Example
+
+```textmate
+class TransformerModel(nn.Module):
+    def __init__(self, num_layers, d_model, num_heads):
+        self.encoder = TransformerEncoder(num_layers, d_model)
+        self.decoder = TransformerDecoder(num_layers, d_model)
+        self.attention = MultiHeadAttention(num_heads, d_model)
+
+    def forward(self, src, tgt):
+        enc_output = self.encoder(src)
+        dec_output = self.decoder(tgt, enc_output)
+        return dec_output
+```
+
+## 7. Variants and Improvements
+
+### 7.1 Popular Variants
+
+1. BERT
+    - Bidirectional encoder
+    - Pre-training + Fine-tuning
+
+2. GPT
+    - Decoder-only architecture
+    - Autoregressive training
+
+3. T5
+    - Text-to-text framework
+    - Unified approach to NLP tasks
+
+### 7.2 Recent Improvements
+
+1. Sparse Attention
+2. Linear Attention
+3. Efficient Transformers
+
+## 8. Performance Considerations
+
+### 8.1 Advantages
+
+- Parallel processing
+- Better long-range dependencies
+- Scalable architecture
+
+### 8.2 Limitations
+
+- Quadratic complexity
+- High memory requirements
+- Position encoding limitations
+
+## 9. Best Practices
+
+### 9.1 Implementation Tips
+
+1. Use proper initialization
+2. Implement warmup steps
+3. Apply gradient clipping
+4. Use appropriate batch size
+
+### 9.2 Optimization Strategies
+
+```textmate
+# Learning rate schedule
+def get_lr(step, d_model, warmup_steps):
+    return d_model ** (-0.5) * min(
+        step ** (-0.5),
+        step * warmup_steps ** (-1.5)
+    )
+```
+
+## 10. Future Directions
+
+1. Efficient attention mechanisms
+2. Improved positional encodings
+3. Task-specific architectures
+4. Resource optimization
+
+# Attention Mechanism in Neural Networks
+
+## Brief Overview
+
+Attention mechanism in neural networks works like human attention - imagine you're at a busy party trying to focus on
+one conversation. Even though you hear many voices, you focus on specific speakers while being aware of others. In
+neural networks, attention allows the model to focus on relevant parts of the input data while processing information.
+Instead of treating all input equally, it "pays attention" to the most important parts for the current task, just like
+how you focus on specific speakers at the party while still maintaining awareness of your surroundings.
+
+Think of attention like a smart highlighter when reading a complex document. When you see the word "it" in a sentence
+like "The cat chased the mouse until it got tired," your brain automatically figures out what "it" refers to by paying
+attention to relevant words in the sentence. In neural networks, attention works similarly: for each word being
+processed, the mechanism calculates a score (like a relevance score) for how much it should "focus" on every other word
+in the sequence. These scores are then converted into weights (using softmax), creating a weighted sum of all words'
+representations, where higher weights mean more attention is paid to those words. So when processing "it" in our
+example, the model might assign higher attention weights to "cat" and "mouse," helping it understand which one "it"
+refers to, just like how our brain connects these references naturally.
+
+## Detailed Technical Content
+
+### 1. Basic Components of Attention
+
+#### Query, Key, and Value (QKV)
+
+```textmate
+# Basic attention mechanism
+def attention(query, key, value):
+    # Computing attention scores
+    scores = dot_product(query, key) / sqrt(key_dimension)
+    # Softmax to get attention weights
+    weights = softmax(scores)
+    # Final attention output
+    output = weights * value
+```
+
+- **Query (Q)**: What we're looking for
+- **Key (K)**: What we're comparing against
+- **Value (V)**: The actual information we want to extract
+
+### 2. Types of Attention
+
+#### 2.1 Self-Attention
+
+- Each element in a sequence attends to all other elements
+- Formula: $Attention(Q,K,V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$
+
+#### 2.2 Multi-Head Attention
+
+```textmate
+def multi_head_attention(query, key, value, num_heads=8):
+    # Split into heads
+    heads = []
+    for i in range(num_heads):
+        head = attention(
+            linear_transform(query),
+            linear_transform(key),
+            linear_transform(value)
+        )
+        heads.append(head)
+    return concatenate(heads)
+```
+
+### 3. Attention Mechanisms in Practice
+
+#### 3.1 Scaled Dot-Product Attention
+
+- Scaling factor: $\sqrt{d_k}$ prevents vanishing gradients
+- More stable training behavior
+
+```textmate
+scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(d_k)
+attention = torch.softmax(scores, dim=-1)
+output = torch.matmul(attention, V)
+```
+
+#### 3.2 Benefits
+
+1. Handles variable-length sequences
+2. Captures long-range dependencies
+3. Enables parallel processing
+4. Provides interpretable weights
+
+### 4. Applications
+
+#### 4.1 Machine Translation
+
+- Source language attention
+- Target language generation
+
+#### 4.2 Document Summarization
+
+- Focus on key sentences
+- Context-aware processing
+
+### 5. Advanced Concepts
+
+#### 5.1 Masked Attention
+
+- Used in decoder self-attention
+- Prevents looking at future tokens
+
+```textmate
+mask = torch.triu(torch.ones(seq_len, seq_len), diagonal=1).bool()
+scores = scores.masked_fill(mask, float('-inf'))
+```
+
+#### 5.2 Cross-Attention
+
+- Connects encoder and decoder
+- Enables sequence-to-sequence tasks
+
+### 6. Common Issues and Solutions
+
+#### 6.1 Memory Complexity
+
+- Quadratic with sequence length
+- Solutions:
+    - Sparse attention
+    - Linear attention
+    - Local attention
+
+#### 6.2 Implementation Tips
+
+1. Proper initialization
+2. Gradient clipping
+3. Layer normalization
+4. Residual connections
+
+## Code Example
+
+```textmate
+class AttentionLayer(nn.Module):
+    def __init__(self, d_model, num_heads):
+        super().__init__()
+        self.d_model = d_model
+        self.num_heads = num_heads
+        self.head_dim = d_model // num_heads
+
+        self.q_linear = nn.Linear(d_model, d_model)
+        self.k_linear = nn.Linear(d_model, d_model)
+        self.v_linear = nn.Linear(d_model, d_model)
+        self.out_linear = nn.Linear(d_model, d_model)
+
+    def forward(self, query, key, value, mask=None):
+        batch_size = query.size(0)
+
+        # Linear transformations and reshape
+        Q = self.q_linear(query).view(batch_size, -1, self.num_heads, self.head_dim)
+        K = self.k_linear(key).view(batch_size, -1, self.num_heads, self.head_dim)
+        V = self.v_linear(value).view(batch_size, -1, self.num_heads, self.head_dim)
+
+        # Scaled dot-product attention
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(self.head_dim)
+        if mask is not None:
+            scores = scores.masked_fill(mask == 0, float('-inf'))
+        attention = torch.softmax(scores, dim=-1)
+
+        # Apply attention to values
+        output = torch.matmul(attention, V)
+        output = output.reshape(batch_size, -1, self.d_model)
+        return self.out_linear(output)
+```
+
+Originally introduced in 2017 by Google researchers led by Ashish Vaswani, transformer models are a type of neural
+network architecture. They are designed to process sequential data (e.g., words in a sentence), such as natural language
+text. But here is why transformer models are revolutionary - they use a self-attention mechanism.
+
+This self-attention mechanism allows them to focus on different parts of the input sequence and adjust their importance
+when making predictions about the output. In contrast Recurring Neural Networks (RNNs)/ Long Short-Term Memory (LSTM)/
+Gated recurrent units (GRUs) are other types of Neural Networks that process a sequence one element at a time. Unlike
+self-attention, RNNs process the sequence in a linear fashion, with each element being processed sequentially based on
+its position in the sequence. As a result, these have a limited attention span and cannot “remember” the context from an
+earlier part of the sequence or conversation. Let’s see this with a visual.
+
+Summary
+So while LSTMs have been very effective in handling sequential data, they do have some limitations:
+
+Limited attention span - They struggle to capture long term dependencies in sequences as they maintain a limited amount
+of information in memory.
+Computation efficiency - LSTMs are computationally expensive to train.
+Handling multiple sequences - LSTMs are designed to handle one sequence at a time.
+Transformers overcome all these limitations of LSTM by using self-attention and parallel processing.
+
+Transformer models have been shown to achieve state-of-the-art performance on a wide range of NLP tasks, including:
+
+language translation
+text generation
+question answering
+sentiment analysis
+named-entity recognition
+This has led to their widespread adoption in industry and academia, and they are now the dominant approach for many NLP
+applications. Their impact has been particularly significant in the development of large-scale language models, such as
+Bidirectional Encoder Representation Transformer (BERT), and Generative Pre-trained Transformer (GPT), which have
+revolutionized the field of NLP across a wide range of tasks.
+
+Open-source APIs for Transformers
+The availability of these powerful transformer models can be found in numerous open-source APIs are currently accessible
+from various companies, including OpenAI, TensorFlow Hub, AWS, Google Cloud AI Platform, and Hugging Face Transformers.
+These APIs offer convenient integration into the data pipelines of businesses, allowing them to take advantage of
+pre-existing transformer models in deep learning and data science.
+
+# Quiz: Multi-Head Attention in Transformer Models
+
+**Question:**
+You are working on a natural language processing project and you are considering using a transformer model for your
+task. What is multi-head attention and how does it help improve the performance of a transformer model?
+
+**Options:**
+
+1. Multi-head attention is the ability of the transformer model to process multiple input sequences simultaneously,
+   allowing it to handle longer sequences more effectively.
+
+2. ✅ Multi-head attention is a technique for allowing the model to focus on different parts of the input sequence at
+   different levels of abstraction, allowing it to capture more complex relationships between the words.
+
+3. Multi-head attention is a mechanism for combining information from different layers of the model, allowing it to
+   leverage information from multiple levels of abstraction.
+
+**Correct Answer:** Option 2
+
+**Explanation:**
+
+Multi-head attention is a mechanism for allowing the model to focus on different parts of the input sequence at
+different levels of abstraction. This can help it capture more complex relationships between words in a sentence. It
+will allow the model to attend to multiple parts of the input sequence simultaneously, so multi-head attention can help
+it handle longer sequences more effectively.
+
+Multi-head attention works by:
+
+1. **Multiple Attention Perspectives**
+    - Creates multiple sets of Query (Q), Key (K), and Value (V) matrices
+    - Each head learns different aspects of relationships
+    - Formal representation: $MultiHead(Q,K,V) = Concat(head_1,...,head_h)W^O$
+
+2. **Parallel Processing**
+
+   ```textmate
+   def multi_head_attention(query, key, value, num_heads):
+       # Split into heads
+       Q = split_into_heads(query, num_heads)
+       K = split_into_heads(key, num_heads)
+       V = split_into_heads(value, num_heads)
+       
+       # Calculate attention for each head
+       attention_per_head = []
+       for i in range(num_heads):
+           attention_per_head.append(
+               scaled_dot_product_attention(Q[i], K[i], V[i])
+           )
+       
+       return concatenate_heads(attention_per_head)
+   ```
+
+3. **Benefits**
+    - Captures different types of relationships
+    - Models both local and global dependencies
+    - Improves model's understanding of context
+    - Enhances feature representation
+
+Why other options are incorrect:
+
+1. Option 1 is incorrect because:
+    - Multi-head attention isn't about processing multiple sequences
+    - It's about multiple viewpoints of the same sequence
+
+3. Option 3 is incorrect because:
+    - Confuses multi-head attention with skip connections
+    - Layer information combination is a different mechanism
+
+The key advantage is the model's ability to:
+
+- Learn multiple types of relationships simultaneously
+- Capture both fine and coarse-grained patterns
+- Process information at different representation subspaces
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+<br>
+
+![image info](images/use_gate.png)
+
+<br>
+
+
+
+
+
+
+
+
 
 
 
