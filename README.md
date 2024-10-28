@@ -2383,10 +2383,257 @@ The key advantage is the model's ability to:
 - Capture both fine and coarse-grained patterns
 - Process information at different representation subspaces
 
+### Transformer Architecture
+
+Transformers are a type of deep learning architecture that has become increasingly popular in natural language
+processing (NLP) tasks such as language translation and text generation. Transformers were introduced in a 2017 paper
+titled "Attention Is All You Need" by Vaswani et al., and have since become a cornerstone of many state-of-the-art NLP
+models.
+
+At a high level, the transformer architecture consists of an encoder and a decoder.
+
+The encoder takes in a sequence of input tokens and produces a sequence of hidden representations
+The decoder takes in the encoder's output and generates a sequence of output tokens.
+The key innovation of transformers is the use of self-attention mechanisms, which allow the model to selectively focus
+on different parts of the input sequence when computing the hidden representations.
+
+The self-attention mechanism works by computing attention weights between each input token and all other input tokens
+and using these weights to compute a weighted sum of the input token embeddings. The attention weights are computed
+using a softmax function applied to the dot product of a query vector, a key vector, and a scaling factor. The query
+vector is derived from the previous layer's hidden representation, while the key and value vectors are derived from the
+input embeddings. The resulting weighted sum is fed into a multi-layer perceptron (MLP) to produce the next layer's
+hidden representation.
+
+More specifically, given an input sequence of length L, the encoder can be represented by a series of L identical
+layers, each consisting of a self-attention mechanism and a feedforward neural network:
+
+EncoderLayer(x)=LayerNorm(x+SelfAttention(x)+FeedForward(x))
+
+
+<br>
+
+![image info](images/transformer_architecture.png)
+
+<br>
+
+Key, Value, and Query
+Let's try to understand the Key, Value, and Query before discussing the Decoder.
+
+The key, value, and query vectors are used in the self-attention mechanism to help the model selectively attend to
+different parts of the input sequence.
+
+Key: You can think of the key vectors as a set of reference points the model uses to decide which parts of the input
+sequence are important.
+Value: The value vectors are the actual information that the model associates with each key vector.
+Query: Query vectors are used to determine how much attention to give to each key-value pair.
+Example: imagine you are trying to summarize a long article. The key vectors could represent the most important
+sentences or phrases in the article, while the value vectors could represent the actual content of those sentences. The
+query vectors would then be used to decide which of these key-value pairs are most relevant to the task of
+summarization.
+
+The self-attention mechanism works by computing a dot product between the query vector and each key vector, which
+produces a set of attention weights that indicate how much attention to give to each value vector. The resulting
+weighted sum of the value vectors represents the attended information for that particular query.
+
+In summary, key, value, and query vectors are used in transformers to help the model focus on important parts of the
+input sequence and produce more accurate and relevant output.
+
+# The Mathematics behind Transformers
+
+The mathematics behind transformers can be quite complex, but at a high level, it involves matrix multiplications, dot
+products, and non-linear activations. The key equations for the self-attention mechanism can be expressed as follows:
+
+$$Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
+
+where Q, K, and V are the query, key, and value matrices, respectively, and $d_k$ is the dimension of the key vectors.
+The softmax function is applied row-wise to the dot product of Q and K, which produces a set of attention weights that
+are used to weight the values in V. The output of the self-attention mechanism is then given by:
+
+$$MultiHead(Q, K, V) = Concat(head_1, ..., head_h)W^O$$
+
+
+<br>
+
+![image info](images/self_attention.png)
+
+<br>
+
+### Decoder
+
+The decoder is similar to the encoder but also includes an additional attention mechanism that allows it to attend to
+the encoder's output.
+
+Overall, the transformer architecture has several advantages over previous NLP models. First, it is highly
+parallelizable, which makes it more efficient to train on modern hardware. Second, it does not rely on any explicit
+notion of sequence order, which allows it to better capture long-term dependencies in the input sequence. Finally, the
+attention mechanisms allow the model to selectively attend to different parts of the input sequence, which helps it
+handle tasks such as language translation where the input and output sequences may have different lengths.
+
+### HuggingFace
+
+Hugging Face is an open-source company that provides NLP tools and models for developers and researchers. Learn more at
+their website(opens in a new tab).
+Their flagship product is the Hugging Face Transformers library, which is a Python-based framework for building,
+training, and deploying state-of-the-art NLP models. Explore the library on GitHub(opens in a new tab)
+Hugging Face Transformers provides pre-trained models for a variety of NLP tasks, such as text classification, question
+answering, machine translation, and text generation. Check out their model hub(opens in a new tab) to browse pre-trained
+models.
+The library allows developers to quickly and easily integrate powerful NLP models into their applications using a simple
+API for loading pre-trained models. See the documentation(opens in a new tab) for more details.
+The library includes a range of tools for fine-tuning models on custom datasets, making it easy to adapt models to
+specific tasks.
+Hugging Face has a large and active community that provides support, documentation, and a range of resources to help
+developers and researchers get the most out of the library. Join the community on their forums(opens in a new tab).
+In addition to pre-trained models and tools, Hugging Face also provides datasets, evaluation metrics, and benchmarking
+tools for NLP. Explore their datasets(opens in a new tab) and evaluation tools(opens in a new tab) on their website.
+Hugging Face is a valuable resource for anyone working with NLP models, whether you are a developer looking to integrate
+models into your applications or a researcher looking to explore the state of the art in NLP. See how Hugging Face
+models have been used in various applications on their blog(opens in a new tab).
+
+### Benefits of using pre-trained models
+
+Pre-trained models are already trained on vast amounts of data and have learned to perform well on a wide range of NLP
+tasks. This saves a lot of time and resources that would otherwise be spent on data collection, pre-processing, and
+model training.
+Hugging Face provides access to a large collection of pre-trained models for various NLP tasks, which are continually
+updated and improved. This allows developers and researchers to choose the best model for their specific use case and
+avoid the risk of building a suboptimal model from scratch.
+The Hugging Face Transformers library provides a simple API for loading and using pre-trained models, making it easy to
+integrate them into custom applications without requiring deep knowledge of NLP or machine learning.
+
+### Transformer Architecture Benefits
+
+Faster to Train
+The replacement of recurrent cells with feedforward networks improves the parallelization of Transformers. Current
+high-performance computing systems are designed to work well with this type of parallelization.
+
+Better Performance
+Transformers offer better performance than RNNs across most natural language tasks. Therefore, we can use them to solve
+new problems.
+
+Versatility
+The Transformer architecture can move between different domains like NLP and Computer Vision.
+
+BERT Overview
+BERT (Bidirectional Encoder Representations from Transformers) is a Machine Learning (ML) model for natural language
+processing developed by Google in 2018. BERT is a versatile model that can handle a range of natural language
+processing (NLP) tasks, including but not limited to:
+
+Sentiment analysis
+Named entity recognition
+Question answering
+Language inference
+Text classification
+Paraphrasing
+Text summarization
+Machine translation
+Language modeling
+Text completion
+Entity linking
+Coreference resolution
+BERT's ability to perform well on these tasks makes it a valuable tool for many NLP applications.
+
+The Science Behind BERT: How it Learns and Processes Language
+
+To achieve its remarkable performance, BERT utilizes the following components:
+
+Extensive training data
+
+BERT was trained on a colossal dataset of 3.3 billion words, which is one of the main factors that contributed to its
+success. Specifically, it was trained on two vast datasets: Wikipedia (about 2.5 billion words) and Google's
+BooksCorpus (about 800 million words). By using these vast and varied datasets, BERT gained a deep understanding of
+natural language.
+
+MLM (Masked Language Modeling)
+
+MLM is a technique used by BERT to learn about the relationships between words in a sentence. In this process, BERT is
+trained to predict what a masked word should be based on the other words in the sentence.
+
+Example:
+Let's say we have the following sentence: "The cat sat on the [MASK]".
+
+During pre-training, BERT may randomly mask one of the words in the sentence. In this case, let's say BERT masks the
+word "mat". The sentence would then look like this: "The cat sat on the [MASK]".
+
+BERT is then trained to predict what the masked word should be based on the other words in the sentence. In this case,
+the correct answer is "mat". By considering the other words in the sentence, such as "cat" and "sat", BERT is able to
+make an educated guess that the missing word is "mat".
+
+This process is repeated many times over with different sentences and different masked words, allowing BERT to learn
+about the relationships between words in a sentence and build a deep understanding of language.
+
+NSP (Next Sentence Prediction)
+
+NSP is another technique used by BERT during pre-training to help it better understand the overall structure and flow of
+language. In this process, BERT is trained to predict whether two sentences are likely to appear together in a piece of
+text.
+
+Example:
+Let's say we have two sentences:
+
+"The cat sat on the mat."
+"It was a beautiful day outside."
+During pre-training, BERT may be given these two sentences and asked to predict whether they are likely to appear
+together in a piece of text. In this case, the answer would be "no" since the two sentences do not seem to be related to
+each other.
+
+BERT is trained using many different pairs of sentences, some of which are related and some of which are not. By
+learning to predict whether pairs of sentences are related or not, BERT gains a better understanding of the overall
+structure and flow of language.
+
+This technique is important because it helps BERT understand the context in which sentences appear, which is crucial for
+many natural language processing tasks such as question answering and text classification.
+
+### BERT Architecture
+
+The above table provides some key specifications of two different versions of the BERT model: BERTbase and BERTlarge.
+
+<br>
+
+![image info](images/bert.png)
+
+<br>
+
+Transformer Layers: This refers to the number of transformer layers in the BERT model. Transformer layers are a key
+component of BERT and are responsible for processing the input text.
+
+Hidden Size: This refers to the number of hidden units in each layer of the BERT model. This is an important parameter
+as it determines the capacity of the model to learn complex patterns in the input data.
+
+Attention Heads: This refers to the number of attention heads used in each transformer layer. Attention heads are
+responsible for computing the attention scores between different parts of the input sequence, which allows the model to
+focus on the most relevant parts of the input.
+
+Parameters: This refers to the total number of parameters in the BERT model. The number of parameters is directly
+proportional to the complexity of the model and determines how well it can fit the training data.
+
+### GPT
+
+GPT, or Generative Pre-trained Transformer, is an advanced autoregressive(opens in a new tab) language model built on
+the transformer architecture, which leverages self-attention mechanisms for efficiently handling long-range dependencies
+in sequence data. The primary goal of GPT models is to predict the next token in a given sequence by learning a
+probability distribution over a vast vocabulary. This is achieved through unsupervised pre-training on large-scale text
+corpora, followed by fine-tuning on specific tasks to generate human-like text, perform translation, answer questions,
+and more.
+
+The evolution of GPT began with GPT-1, which demonstrated the potential of unsupervised pre-training followed by
+task-specific fine-tuning. GPT-2, the successor, utilized a much larger dataset and model size, leading to substantially
+improved performance across various NLP tasks. However, its release was initially limited due to concerns about
+potential misuse. GPT-3 took the concept further, scaling up to 175 billion parameters and introducing the "few-shot
+learning(opens in a new tab)" paradigm, which allowed the model to perform tasks with very limited task-specific
+training data.
+
+GPT-4 builds upon the advancements of its predecessors, featuring an even larger model size and enhanced pre-training
+techniques. This latest iteration benefits from architectural improvements, such as sparsity and attention mechanisms
+that facilitate more efficient training and inference. GPT-4's greater capacity enables it to learn more sophisticated
+language patterns and generate higher-quality output across a broader range of tasks. Additionally, GPT-4 can be
+fine-tuned with smaller datasets, making it a powerful tool for specialized applications in various domains. Despite its
+impressive capabilities, GPT-4 still faces challenges in controlling generated content, ensuring factual accuracy, and
+mitigating biases present in training data.
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 <br>
 
-![image info](images/use_gate.png)
+![image info](images/bert.png)
 
 <br>
 
