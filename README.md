@@ -2533,7 +2533,79 @@ Entity linking
 Coreference resolution
 BERT's ability to perform well on these tasks makes it a valuable tool for many NLP applications.
 
-The Science Behind BERT: How it Learns and Processes Language
+Steps to Finetune BERT
+
+1. First, we need to import all the necessary packages. We will use the datasets(opens in a new tab) library to load
+   data and functions to compute metrics. From HuggingFace's transformers(opens in a new tab) package, we will import
+   tokenizers, trainers, and models for sentence classification.
+
+```textmate
+from datasets import load_dataset
+from transformers import AutoTokenizer
+from transformers import AutoModelForSequenceClassification
+from transformers import TrainingArguments, Trainer
+import numpy as np
+from datasets import load_metric
+```
+
+2. Next, we will define some functions to compute our metrics and tokenize our sentences.
+
+```textmate
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
+
+def tokenize_function(examples):
+    return tokenizer(examples["text"], padding="max_length", truncation=True)
+```
+
+3. Now, we can load and preprocess our dataset. Remember that we will use the datasets package to load data. The
+   datasets
+   package has many inbuilt datasets available, and you can find a list here
+
+
+4. The tokenizer we select needs to be the same as the model we are using. There are many pre-trained models available
+   in transformers and you can find a list of them here(opens in a new tab). In the code below, you can see that I am
+   using the bert-base-cased model. Once we have selected the model, we need to tokenize our dataset. I have also added
+   code to use a small subset of the data to make training faster. However, you may choose to use the whole dataset by
+   uncommenting the last two lines.
+
+```textmate
+tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
+
+small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(1000))
+small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(1000))
+
+# full_train_dataset = tokenized_datasets["train"]
+# full_eval_dataset = tokenized_datasets["test"]
+```
+
+5. Now that we have written our data preprocessing code, we can download our model and start to train it. We will use the AutoModelForSequenceClassification API to fetch the pre-trained bert-base-cased model. We also need to specify the number of classes in our data.
+Finally, we can train and evaluate the model using a Trainer object.
+
+```textmate
+model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=<your labels>)
+metric = load_metric("accuracy")
+
+training_args = TrainingArguments("test_trainer", evaluation_strategy="epoch")
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=small_train_dataset,
+    eval_dataset=small_eval_dataset,
+    compute_metrics=compute_metrics,
+)
+trainer.train()
+trainer.evaluate()
+```
+
+Note: Fine tuning BERT takes a long time (even on GPUs), hence we are not providing a workspace for this demo. Please try this on your local machine.
+
+
+### The Science Behind BERT: How it Learns and Processes Language
 
 To achieve its remarkable performance, BERT utilizes the following components:
 
