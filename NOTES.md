@@ -1,4 +1,9 @@
-# Introduction to Recurrent Neural Networks (RNN)
+# RNNs and Transformers
+
+<br>
+<br>
+
+# C-1: Intro to RNN
 
 ## 1. Introduction
 
@@ -336,16 +341,18 @@ network a notepad to write down important things to remember.
 Think of LSTM as a smart safe box with three keys:
 
 1. **Forget Gate** (First Key)
-    - Decides what to throw away
-    - Like cleaning your room: "Do I still need this?"
+
+   - Decides what to throw away
+   - Like cleaning your room: "Do I still need this?"
 
 2. **Input Gate** (Second Key)
-    - Decides what new information to save
-    - Like taking notes: "This is important, let me write it down"
+
+   - Decides what new information to save
+   - Like taking notes: "This is important, let me write it down"
 
 3. **Output Gate** (Third Key)
-    - Decides what to share/use
-    - Like deciding what to tell someone: "From everything I know, here's what's relevant"
+   - Decides what to share/use
+   - Like deciding what to tell someone: "From everything I know, here's what's relevant"
 
 ### Real-world Analogy
 
@@ -360,12 +367,13 @@ Imagine you're watching a TV series:
 GRU is like LSTM's younger sibling - simpler but still effective. Instead of three keys, it has two:
 
 1. **Update Gate**
-    - Decides how much of the old information to keep
-    - Like updating your to-do list: combining old and new tasks
+
+   - Decides how much of the old information to keep
+   - Like updating your to-do list: combining old and new tasks
 
 2. **Reset Gate**
-    - Decides how much past information to forget
-    - Like starting a new page in your notebook
+   - Decides how much past information to forget
+   - Like starting a new page in your notebook
 
 ### Real-world Analogy
 
@@ -396,7 +404,7 @@ def LSTM(input):
     forget = decide_what_to_forget(input)
     store = decide_what_to_store(input)
     output = decide_what_to_output(input)
-    
+
     memory = update_memory(forget, store)
     return output_filtered_memory(memory, output)
 
@@ -404,7 +412,7 @@ def LSTM(input):
 def GRU(input):
     update = decide_update_level(input)
     reset = decide_reset_level(input)
-    
+
     new_memory = combine_memory(update, reset, input)
     return new_memory
 ```
@@ -412,20 +420,23 @@ def GRU(input):
 ## Practical Applications
 
 1. **Text Generation**
-    - Writing assistant
-    - Auto-completion
+
+   - Writing assistant
+   - Auto-completion
 
 2. **Translation**
-    - Google Translate
-    - Real-time translation apps
+
+   - Google Translate
+   - Real-time translation apps
 
 3. **Speech Recognition**
-    - Siri
-    - Alexa
+
+   - Siri
+   - Alexa
 
 4. **Music Generation**
-    - Creating melodies
-    - Continuing musical patterns
+   - Creating melodies
+   - Continuing musical patterns
 
 # Technical Deep-Dive into LSTM and GRU
 
@@ -442,8 +453,8 @@ determines what new information should be stored.
 The LSTM's power lies in its ability to maintain constant error flow through its constant error carousel (CEC),
 effectively addressing the vanishing gradient problem. When the forget gate is open (close to 1) and the input gate is
 closed (close to 0), the cell state maintains its values without degradation, allowing the network to preserve
-information over hundreds or even thousands of time steps. The key equation governing the cell state update is Ct = ft *
-Ct-1 + it * C̃t, where C̃t is the candidate cell state computed using a tanh layer. This multiplicative gating mechanism
+information over hundreds or even thousands of time steps. The key equation governing the cell state update is Ct = ft _
+Ct-1 + it _ C̃t, where C̃t is the candidate cell state computed using a tanh layer. This multiplicative gating mechanism
 allows for precise control over the memory content, making LSTMs particularly effective for tasks requiring long-term
 dependencies like machine translation or complex sequence generation.
 
@@ -455,7 +466,7 @@ retained versus how much of the new candidate state should be used. This is comp
 controls access to the previous hidden state when computing the new candidate state. The mathematical elegance of GRUs
 lies in their ability to achieve similar performance to LSTMs with fewer parameters and simpler computation.
 
-The core innovation of GRUs is their interpolation mechanism for updating the hidden state: ht = (1 - zt) * ht-1 + zt *
+The core innovation of GRUs is their interpolation mechanism for updating the hidden state: ht = (1 - zt) _ ht-1 + zt _
 h̃t, where h̃t is the candidate activation. This formulation ensures that the network can effectively learn to keep
 existing information or replace it with new content. The reset gate operates earlier in the pipeline, controlling how
 much of the previous state contributes to the candidate activation, allowing the network to effectively "forget" when
@@ -709,81 +720,92 @@ depends on specific use case requirements.
 ## 1. Architecture and Memory
 
 - **Feed-Forward Networks**
-    - Unidirectional flow: Information flows only forward
-    - No memory of previous inputs
-    - Fixed input size
-    - Each input is processed independently
+
+  - Unidirectional flow: Information flows only forward
+  - No memory of previous inputs
+  - Fixed input size
+  - Each input is processed independently
+
   ```textmate
   Output = f(W * Input + b)
   ```
 
 - **Recurrent Neural Networks**
-    - Cyclic connections: Information can flow in cycles
-    - Has memory through hidden states
-    - Variable input size
-    - Sequential processing with memory:
+
+  - Cyclic connections: Information can flow in cycles
+  - Has memory through hidden states
+  - Variable input size
+  - Sequential processing with memory:
 
   ```textmate
   ht = tanh(Whh * ht-1 + Wxh * xt + bh)
   yt = Why * ht + by
   ```
+
   Where:
-    - ht: Current hidden state
-    - ht-1: Previous hidden state
-    - xt: Current input
-    - W: Weight matrices
-    - b: Bias terms
+
+  - ht: Current hidden state
+  - ht-1: Previous hidden state
+  - xt: Current input
+  - W: Weight matrices
+  - b: Bias terms
 
 ## 2. Application Domains
 
 - **Feed-Forward Networks**
-    - Image classification
-    - Single-frame prediction
-    - Pattern recognition
-    - Fixed-size input problems
+
+  - Image classification
+  - Single-frame prediction
+  - Pattern recognition
+  - Fixed-size input problems
 
 - **Recurrent Networks**
-    - Time series analysis
-    - Natural language processing
-    - Speech recognition
-    - Sequential data prediction
-    - Variable-length sequences
+  - Time series analysis
+  - Natural language processing
+  - Speech recognition
+  - Sequential data prediction
+  - Variable-length sequences
 
 ## 3. Training Process
 
 - **Feed-Forward Networks**
-    - Standard backpropagation
-    - Each sample trained independently
-    - Simpler gradient computation
-    - Faster training generally
+
+  - Standard backpropagation
+  - Each sample trained independently
+  - Simpler gradient computation
+  - Faster training generally
 
 - **Recurrent Networks**
-    - Backpropagation through time (BPTT)
-    - Sequential dependency in training
-    - More complex gradient computation:
+  - Backpropagation through time (BPTT)
+  - Sequential dependency in training
+  - More complex gradient computation:
   ```
   ∂L/∂W = Σt (∂L/∂yt * ∂yt/∂ht * ∂ht/∂W)
   ```
-    - More prone to vanishing/exploding gradients
-    - Generally slower training
+  - More prone to vanishing/exploding gradients
+  - Generally slower training
 
 ## 4. Memory and Context
 
 - **Feed-Forward Networks**
-    - No internal memory
-    - Each input-output pair is independent
-    - Context must be explicitly provided
-    - Fixed context window
+
+  - No internal memory
+  - Each input-output pair is independent
+  - Context must be explicitly provided
+  - Fixed context window
 
 - **Recurrent Networks**
-    - Internal state maintains memory
-    - Hidden state equation:
+
+  - Internal state maintains memory
+  - Hidden state equation:
+
   ```
   h(t) = f(h(t-1), x(t))
   ```
-    - Can learn long-term dependencies
-    - Dynamic context window
-    - Variants like LSTM handle long-term dependencies:
+
+  - Can learn long-term dependencies
+  - Dynamic context window
+  - Variants like LSTM handle long-term dependencies:
 
   ```textmate
   ft = σ(Wf·[ht-1, xt] + bf)
@@ -898,24 +920,31 @@ $$E_{total} = \sum_{t=1}^{T} E_t$$
 Gradient calculations:
 
 1. Output layer:
-   $$\frac{\partial E}{\partial W_{hy}} = \sum_{t=1}^{T} \frac{\partial E_t}{\partial y_t} \frac{\partial y_t}{\partial
-   W_{hy}}$$
+
+   $$
+   \frac{\partial E}{\partial W_{hy}} = \sum_{t=1}^{T} \frac{\partial E_t}{\partial y_t} \frac{\partial y_t}{\partial
+   W_{hy}}
+   $$
 
 2. Hidden layer:
-   $$\frac{\partial E}{\partial W_h} = \sum_{t=1}^{T} \sum_{k=1}^{t} \frac{\partial E_t}{\partial h_t} \frac{\partial
-   h_t}{\partial h_k} \frac{\partial h_k}{\partial W_h}$$
+   $$
+   \frac{\partial E}{\partial W_h} = \sum_{t=1}^{T} \sum_{k=1}^{t} \frac{\partial E_t}{\partial h_t} \frac{\partial
+   h_t}{\partial h_k} \frac{\partial h_k}{\partial W_h}
+   $$
 
 ## Key Steps in BPTT
 
 1. **Forward Pass**
-    - Run the RNN forward for all time steps
-    - Store all hidden states and outputs
-    - Calculate error at each time step
+
+   - Run the RNN forward for all time steps
+   - Store all hidden states and outputs
+   - Calculate error at each time step
 
 2. **Backward Pass**
-    - Start from the last time step
-    - Compute gradients at each time step
-    - Accumulate gradients through time
+
+   - Start from the last time step
+   - Compute gradients at each time step
+   - Accumulate gradients through time
 
 3. **Weight Updates**
    ```textmate
@@ -927,13 +956,14 @@ Gradient calculations:
 ## Challenges
 
 1. **Vanishing Gradients**
-    - When backpropagating through many time steps
-    - Gradients become very small
-    - Solution: LSTM/GRU cells
+
+   - When backpropagating through many time steps
+   - Gradients become very small
+   - Solution: LSTM/GRU cells
 
 2. **Exploding Gradients**
-    - Gradients become very large
-    - Solution: Gradient clipping
+   - Gradients become very large
+   - Solution: Gradient clipping
    ```textmate
    if gradient > threshold:
        gradient = gradient * (threshold/gradient_magnitude)
@@ -976,14 +1006,15 @@ def bptt(inputs, targets, hidden_state):
 ## Variants
 
 1. **Truncated BPTT**
-    - Limit the number of timesteps to backpropagate through
-    - More computationally efficient
-    - May miss long-term dependencies
+
+   - Limit the number of timesteps to backpropagate through
+   - More computationally efficient
+   - May miss long-term dependencies
 
 2. **Full BPTT**
-    - Backpropagate through entire sequence
-    - More accurate but computationally expensive
-    - Better for capturing long-term dependencies
+   - Backpropagate through entire sequence
+   - More accurate but computationally expensive
+   - Better for capturing long-term dependencies
 
 # Training RNNs: Backpropagation Through Time (BPTT)
 
@@ -1050,14 +1081,19 @@ In BPTT, we will consider every gradient stemming from each state, accumulating 
 
 At timestep t=3, the contribution to the gradient stemming from $\bar{s_3}$, $\bar{s_2}$, and $\bar{s_1}$ is:
 
-$$\frac{\partial E_3}{\partial W_s} = \frac{\partial E_3}{\partial \bar{y_3}} \frac{\partial \bar{s_3}}{\partial W_s} +
+$$
+\frac{\partial E_3}{\partial W_s} = \frac{\partial E_3}{\partial \bar{y_3}} \frac{\partial \bar{s_3}}{\partial W_s} +
 \frac{\partial E_3}{\partial \bar{y_3}} \frac{\partial \bar{s_3}}{\partial \bar{s_2}} \frac{\partial \bar{s_2}}{\partial
 W_s} + \frac{\partial E_3}{\partial \bar{y_3}} \frac{\partial \bar{s_3}}{\partial \bar{s_2}} \frac{\partial
-\bar{s_2}}{\partial \bar{s_1}} \frac{\partial \bar{s_1}}{\partial W_s}$$
+\bar{s_2}}{\partial \bar{s_1}} \frac{\partial \bar{s_1}}{\partial W_s}
+$$
 
 For N timesteps:
-$$\frac{\partial E_N}{\partial W_s} = \sum_{i=1}^{N} \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial
-\bar{s_i}}{\partial W_s}$$
+
+$$
+\frac{\partial E_N}{\partial W_s} = \sum_{i=1}^{N} \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial
+\bar{s_i}}{\partial W_s}
+$$
 
 ## Adjusting/Updating $W_x$
 
@@ -1106,12 +1142,18 @@ Equation 1:
 $$\frac{\partial E_N}{\partial W_y} = \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial \bar{y_N}}{\partial W_y}$$
 
 Equation 2:
-$$\frac{\partial E_N}{\partial W_s} = \sum_{i=1}^N \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial
-\bar{s_i}}{\partial W_s}$$
+
+$$
+\frac{\partial E_N}{\partial W_s} = \sum_{i=1}^N \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial
+\bar{s_i}}{\partial W_s}
+$$
 
 Equation 3:
-$$\frac{\partial E_N}{\partial W_x} = \sum_{i=1}^N \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial
-\bar{s_i}}{\partial W_x}$$
+
+$$
+\frac{\partial E_N}{\partial W_x} = \sum_{i=1}^N \frac{\partial E_N}{\partial \bar{y_N}} \frac{\partial
+\bar{s_i}}{\partial W_x}
+$$
 
 When training RNNs using BPTT, we can choose to use mini-batches, where we update the weights in batches periodically (
 as opposed to once every inputs sample). We calculate the gradient for each step but do not update the weights
@@ -1174,19 +1216,21 @@ The process of breaking down text into smaller units called tokens. These tokens
 Types:
 
 1. **Word Tokenization**
-    - Splits text into words
-    - Handles punctuation and special cases
-    - Considers language-specific rules
+
+   - Splits text into words
+   - Handles punctuation and special cases
+   - Considers language-specific rules
 
 2. **Sentence Tokenization**
-    - Splits text into sentences
-    - Handles abbreviations
-    - Manages multiple punctuation marks
+
+   - Splits text into sentences
+   - Handles abbreviations
+   - Manages multiple punctuation marks
 
 3. **Subword Tokenization**
-    - Creates tokens smaller than words
-    - Useful for handling unknown words
-    - Common in modern NLP systems
+   - Creates tokens smaller than words
+   - Useful for handling unknown words
+   - Common in modern NLP systems
 
 ## 3. Stop Word Removal
 
@@ -1245,46 +1289,52 @@ Considerations:
 ### When to Use Which Technique:
 
 1. **Normalization**
-    - Always use as first step
-    - Crucial for consistency
-    - Adapt to specific needs
+
+   - Always use as first step
+   - Crucial for consistency
+   - Adapt to specific needs
 
 2. **Tokenization**
-    - Essential for most NLP tasks
-    - Choose level based on application
-    - Consider language specifics
+
+   - Essential for most NLP tasks
+   - Choose level based on application
+   - Consider language specifics
 
 3. **Stop Word Removal**
-    - Use for document classification
-    - Skip for sentiment analysis
-    - Customize list per application
+
+   - Use for document classification
+   - Skip for sentiment analysis
+   - Customize list per application
 
 4. **Stemming**
-    - Use when speed is priority
-    - Good for search applications
-    - Accept some inaccuracy
+
+   - Use when speed is priority
+   - Good for search applications
+   - Accept some inaccuracy
 
 5. **Lemmatization**
-    - Use when accuracy is crucial
-    - Better for meaning preservation
-    - Accept slower processing
+   - Use when accuracy is crucial
+   - Better for meaning preservation
+   - Accept slower processing
 
 ### Common Challenges:
 
 1. **Language Dependency**
-    - Different rules for different languages
-    - Varying effectiveness of techniques
-    - Need for language-specific tools
+
+   - Different rules for different languages
+   - Varying effectiveness of techniques
+   - Need for language-specific tools
 
 2. **Context Sensitivity**
-    - Word meaning changes with context
-    - Impact on accuracy
-    - Trade-offs between speed and precision
+
+   - Word meaning changes with context
+   - Impact on accuracy
+   - Trade-offs between speed and precision
 
 3. **Processing Speed**
-    - Balancing accuracy vs performance
-    - Resource constraints
-    - Scalability considerations
+   - Balancing accuracy vs performance
+   - Resource constraints
+   - Scalability considerations
 
 ### Word Embeddings
 
@@ -1352,7 +1402,13 @@ PyTorch, you can generate charNgram embeddings using the torchtext package. The 
 you to generate character n-grams for a given text corpus, and the resulting n-grams can be used to generate charNgram
 embeddings for individual words.
 
-# Introduction to LSTM
+<br>
+<br>
+
+# C-2: Introduction to LSTM
+
+<br>
+<br>
 
 Lesson Outline
 In this lesson, we will cover the following topics:
@@ -1393,7 +1449,6 @@ Below, "x-bar-t-plus-1" represents the next input state, multiplied by the weigh
 the cell to produce the next hidden state, labeled as "x-bar-t-plus-1," which exits to the right and is multiplied by "
 W-S."
 
-
 <br>
 
 ![image info](images/rnn_neuron.png)
@@ -1419,7 +1474,6 @@ multiplication and addition. The cell has several gates: the forget gate, input 
 with the input "x-sub-t" and the previous state to control which information to store or discard. There are arrows
 showing information flow through the LSTM, including multiplications and additions, with multiple paths converging or
 splitting based on the gate operations.
-
 
 <br>
 
@@ -1464,13 +1518,11 @@ Outputs
 
 <br>
 
-
 <br>
 
 ![image info](images/gate.png)
 
 <br>
-
 
 <br>
 
@@ -1548,7 +1600,7 @@ Where:
 
 - Ct: New cell state
 - Ct-1: Previous cell state
-- *: Element-wise multiplication
+- \*: Element-wise multiplication
 
 ### Purpose:
 
@@ -1594,18 +1646,18 @@ Where:
 def lstm_forward(x_t, h_prev, c_prev):
     # Forget Gate
     f_t = sigmoid(dot(W_f, concat(h_prev, x_t)) + b_f)
-    
+
     # Input Gate
     i_t = sigmoid(dot(W_i, concat(h_prev, x_t)) + b_i)
     c_tilde = tanh(dot(W_c, concat(h_prev, x_t)) + b_c)
-    
+
     # Cell State Update
     c_t = f_t * c_prev + i_t * c_tilde
-    
+
     # Output Gate
     o_t = sigmoid(dot(W_o, concat(h_prev, x_t)) + b_o)
     h_t = o_t * tanh(c_t)
-    
+
     return h_t, c_t
 ```
 
@@ -1646,7 +1698,7 @@ def visualize_gates(lstm_layer, input_sequence):
     input_acts = lstm_layer.get_input_gate_values(input_sequence)
     cell_acts = lstm_layer.get_cell_state_values(input_sequence)
     output_acts = lstm_layer.get_output_gate_values(input_sequence)
-    
+
     # Plot activations
     plt.figure(figsize=(15, 10))
     plt.subplot(4,1,1)
@@ -1680,14 +1732,15 @@ the same operation for the STM. ✅
 In LSTM networks, the memory update process works as follows:
 
 1. **Remember Gate (Cell State Update)**:
-    - Takes both Long Term Memory (LTM/Cell State) and Short Term Memory (STM/Hidden State)
-    - Formula: `Ct = ft * Ct-1 + it * C̃t`
-    - Determines what information to keep and what to update in the LTM
+
+   - Takes both Long Term Memory (LTM/Cell State) and Short Term Memory (STM/Hidden State)
+   - Formula: `Ct = ft * Ct-1 + it * C̃t`
+   - Determines what information to keep and what to update in the LTM
 
 2. **USE Gate (Output Gate)**:
-    - Controls the Short Term Memory update
-    - Formula: `ht = ot * tanh(Ct)`
-    - Filters the cell state to create the new hidden state (STM)
+   - Controls the Short Term Memory update
+   - Formula: `ht = ot * tanh(Ct)`
+   - Filters the cell state to create the new hidden state (STM)
 
 The process is sequential:
 
@@ -1725,51 +1778,54 @@ Let's analyze each component and why it's correct or incorrect:
 **Correct Components:**
 
 1. **Input Vector, LTM, and STM**
-    - Essential inputs for LSTM processing
-    - LTM (Long-Term Memory) stores long-term dependencies
-    - STM (Short-Term Memory) handles immediate context
+
+   - Essential inputs for LSTM processing
+   - LTM (Long-Term Memory) stores long-term dependencies
+   - STM (Short-Term Memory) handles immediate context
 
 2. **Four Gates (Forget, Learn, Remember, Use)**
-    - Forget Gate: Decides what to discard
-    - Learn Gate: Determines new information to store
-    - Remember Gate: Updates cell state
-    - Use Gate: Controls output information
+
+   - Forget Gate: Decides what to discard
+   - Learn Gate: Determines new information to store
+   - Remember Gate: Updates cell state
+   - Use Gate: Controls output information
 
 3. **Hidden State**
-    - Represents short-term memory
-    - Carries immediate context information
-    - Essential for sequence processing
+
+   - Represents short-term memory
+   - Carries immediate context information
+   - Essential for sequence processing
 
 4. **LTM and STM Outputs**
-    - Critical for information flow
-    - Enables both short and long-term memory retention
-    - Necessary for next time step processing
+
+   - Critical for information flow
+   - Enables both short and long-term memory retention
+   - Necessary for next time step processing
 
 5. **Cell State**
-    - Core component for maintaining long-term dependencies
-    - Acts as the memory highway through time
-    - Essential for solving vanishing gradient problem
+   - Core component for maintaining long-term dependencies
+   - Acts as the memory highway through time
+   - Essential for solving vanishing gradient problem
 
 **Incorrect Components:**
 
 1. **Modulation Factor**
-    - Not a standard LSTM component
-    - Might be confused with gate multipliers
+
+   - Not a standard LSTM component
+   - Might be confused with gate multipliers
 
 2. **Normalization Gate**
-    - Not part of standard LSTM architecture
-    - While normalization can be used in LSTMs, it's not a gate component
+   - Not part of standard LSTM architecture
+   - While normalization can be used in LSTMs, it's not a gate component
 
 This distinction shows that LSTM's power comes from its carefully designed memory and gate mechanisms, not from
 additional processing components.
-
 
 <br>
 
 ![image info](images/rnn_architecture.png)
 
 <br>
-
 
 <br>
 
@@ -1779,7 +1835,7 @@ additional processing components.
 
 ### Learn Gate
 
-The output of the *Learn Gate* is $N_ti_t$ where:
+The output of the _Learn Gate_ is $N_ti_t$ where:
 
 Equation 1:
 
@@ -1808,7 +1864,6 @@ The output of the Forget Gate is $LTM_{t-1}f_t$ where:
 **Equation 2:**
 $$f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$$
 
-
 <br>
 
 ![image info](images/forget_gate.png)
@@ -1825,7 +1880,6 @@ The output of the Remember Gate is:
 $$LTM_{t-1}f_t + N_ti_t$$
 
 $(N_t, i_t \text{ and } f_t \text{ are calculated in equations 1 and 2})$
-
 
 <br>
 
@@ -1864,7 +1918,7 @@ These equations represent the mathematical formulation of how information flows 
 **Question:** Match each LSTM gate to its function.
 
 | Gate              | Function                                                  | Explanation                                                                                                                                                                   |
-|-------------------|-----------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ----------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | The Forget Gate   | Chooses which parts of the long-term memory are important | Controls what information should be discarded from the cell state using a sigmoid function to output values between 0 (forget) and 1 (keep)                                   |
 | The Learn Gate    | Updates the short-term memory with new information        | Creates and controls what new information should be stored in the cell state, using both a sigmoid layer to decide what to update and a tanh layer to create candidate values |
 | The Remember Gate | Outputs the long-term memory                              | Combines the filtered old memory (from Forget Gate) with potential new memories (from Learn Gate) to update the cell state                                                    |
@@ -1873,29 +1927,38 @@ These equations represent the mathematical formulation of how information flows 
 **Detailed Explanation:**
 
 1. **Forget Gate**
-    - Primary function: Information filtering
-    - Equation: $f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$
-    - Acts as the memory "clearance" mechanism
+
+   - Primary function: Information filtering
+   - Equation: $f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$
+   - Acts as the memory "clearance" mechanism
 
 2. **Learn Gate**
-    - Primary function: Information acquisition
-    - Updates STM with new data
-    - Essential for incorporating new information
+
+   - Primary function: Information acquisition
+   - Updates STM with new data
+   - Essential for incorporating new information
 
 3. **Remember Gate**
-    - Primary function: Memory persistence
-    - Equation: $LTM_{t-1}f_t + N_ti_t$
-    - Manages long-term information storage
+
+   - Primary function: Memory persistence
+   - Equation: $LTM_{t-1}f_t + N_ti_t$
+   - Manages long-term information storage
 
 4. **Use Gate**
-    - Primary function: Output control
-    - Equation: $U_tV_t$ where $U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$
-    - Controls information flow to the next layer
+   - Primary function: Output control
+   - Equation: $U_tV_t$ where $U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$
+   - Controls information flow to the next layer
 
 These gates work together to create LSTM's ability to maintain and manage both short-term and long-term dependencies in
 sequential data.
 
-# Introduction to Transformers
+<br>
+<br>
+
+# C-3: Introduction to Transformers
+
+<br>
+<br>
 
 # Transformer Model Neural Networks Lecture Notes
 
@@ -1933,19 +1996,20 @@ Input -> Embedding -> Encoder Stack -> Decoder Stack -> Output
 ### 2.2 Main Components
 
 1. **Encoder**
-    - Multiple identical layers
-    - Each layer has:
-        - Multi-head attention
-        - Feed-forward network
-        - Layer normalization
-        - Residual connections
+
+   - Multiple identical layers
+   - Each layer has:
+     - Multi-head attention
+     - Feed-forward network
+     - Layer normalization
+     - Residual connections
 
 2. **Decoder**
-    - Similar to encoder but with additional layer
-    - Components:
-        - Masked multi-head attention
-        - Encoder-decoder attention
-        - Feed-forward network
+   - Similar to encoder but with additional layer
+   - Components:
+     - Masked multi-head attention
+     - Encoder-decoder attention
+     - Feed-forward network
 
 ## 3. Key Mechanisms
 
@@ -1986,9 +2050,10 @@ i + 1) = cos(pos / 10000 ^ (2i / d_model))
 ### 4.1 Training Components
 
 1. Input Processing
-    - Tokenization
-    - Embedding
-    - Positional encoding
+
+   - Tokenization
+   - Embedding
+   - Positional encoding
 
 2. Loss Calculation
 
@@ -1997,8 +2062,8 @@ i + 1) = cos(pos / 10000 ^ (2i / d_model))
    ```
 
 3. Optimization
-    - Adam optimizer
-    - Learning rate with warmup
+   - Adam optimizer
+   - Learning rate with warmup
 
 ### 4.2 Training Techniques
 
@@ -2049,16 +2114,18 @@ class TransformerModel(nn.Module):
 ### 7.1 Popular Variants
 
 1. BERT
-    - Bidirectional encoder
-    - Pre-training + Fine-tuning
+
+   - Bidirectional encoder
+   - Pre-training + Fine-tuning
 
 2. GPT
-    - Decoder-only architecture
-    - Autoregressive training
+
+   - Decoder-only architecture
+   - Autoregressive training
 
 3. T5
-    - Text-to-text framework
-    - Unified approach to NLP tasks
+   - Text-to-text framework
+   - Unified approach to NLP tasks
 
 ### 7.2 Recent Improvements
 
@@ -2225,9 +2292,9 @@ scores = scores.masked_fill(mask, float('-inf'))
 
 - Quadratic with sequence length
 - Solutions:
-    - Sparse attention
-    - Linear attention
-    - Local attention
+  - Sparse attention
+  - Linear attention
+  - Local attention
 
 #### 6.2 Implementation Tips
 
@@ -2338,9 +2405,10 @@ it handle longer sequences more effectively.
 Multi-head attention works by:
 
 1. **Multiple Attention Perspectives**
-    - Creates multiple sets of Query (Q), Key (K), and Value (V) matrices
-    - Each head learns different aspects of relationships
-    - Formal representation: $MultiHead(Q,K,V) = Concat(head_1,...,head_h)W^O$
+
+   - Creates multiple sets of Query (Q), Key (K), and Value (V) matrices
+   - Each head learns different aspects of relationships
+   - Formal representation: $MultiHead(Q,K,V) = Concat(head_1,...,head_h)W^O$
 
 2. **Parallel Processing**
 
@@ -2350,32 +2418,33 @@ Multi-head attention works by:
        Q = split_into_heads(query, num_heads)
        K = split_into_heads(key, num_heads)
        V = split_into_heads(value, num_heads)
-       
+
        # Calculate attention for each head
        attention_per_head = []
        for i in range(num_heads):
            attention_per_head.append(
                scaled_dot_product_attention(Q[i], K[i], V[i])
            )
-       
+
        return concatenate_heads(attention_per_head)
    ```
 
 3. **Benefits**
-    - Captures different types of relationships
-    - Models both local and global dependencies
-    - Improves model's understanding of context
-    - Enhances feature representation
+   - Captures different types of relationships
+   - Models both local and global dependencies
+   - Improves model's understanding of context
+   - Enhances feature representation
 
 Why other options are incorrect:
 
 1. Option 1 is incorrect because:
-    - Multi-head attention isn't about processing multiple sequences
-    - It's about multiple viewpoints of the same sequence
 
-3. Option 3 is incorrect because:
-    - Confuses multi-head attention with skip connections
-    - Layer information combination is a different mechanism
+   - Multi-head attention isn't about processing multiple sequences
+   - It's about multiple viewpoints of the same sequence
+
+2. Option 3 is incorrect because:
+   - Confuses multi-head attention with skip connections
+   - Layer information combination is a different mechanism
 
 The key advantage is the model's ability to:
 
@@ -2408,7 +2477,6 @@ More specifically, given an input sequence of length L, the encoder can be repre
 layers, each consisting of a self-attention mechanism and a feedforward neural network:
 
 EncoderLayer(x)=LayerNorm(x+SelfAttention(x)+FeedForward(x))
-
 
 <br>
 
@@ -2450,7 +2518,6 @@ The softmax function is applied row-wise to the dot product of Q and K, which pr
 are used to weight the values in V. The output of the self-attention mechanism is then given by:
 
 $$MultiHead(Q, K, V) = Concat(head_1, ..., head_h)W^O$$
-
 
 <br>
 
@@ -2564,7 +2631,6 @@ def tokenize_function(examples):
    datasets
    package has many inbuilt datasets available, and you can find a list here
 
-
 4. The tokenizer we select needs to be the same as the model we are using. There are many pre-trained models available
    in transformers and you can find a list of them here(opens in a new tab). In the code below, you can see that I am
    using the bert-base-cased model. Once we have selected the model, we need to tokenize our dataset. I have also added
@@ -2583,7 +2649,7 @@ small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(10
 ```
 
 5. Now that we have written our data preprocessing code, we can download our model and start to train it. We will use the AutoModelForSequenceClassification API to fetch the pre-trained bert-base-cased model. We also need to specify the number of classes in our data.
-Finally, we can train and evaluate the model using a Trainer object.
+   Finally, we can train and evaluate the model using a Trainer object.
 
 ```textmate
 model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=<your labels>)
@@ -2603,7 +2669,6 @@ trainer.evaluate()
 ```
 
 Note: Fine tuning BERT takes a long time (even on GPUs), hence we are not providing a workspace for this demo. Please try this on your local machine.
-
 
 ### The Science Behind BERT: How it Learns and Processes Language
 
@@ -2708,12 +2773,3 @@ mitigating biases present in training data.
 ![image info](images/bert.png)
 
 <br>
-
-
-
-
-
-
-
-
-
