@@ -246,8 +246,7 @@ increase, gradient magnitudes tend to decrease exponentially, severely slowing o
 
 ### 1. Recurrent Network Model
 
-Basic evolution equation:
-$$(h_t, x_t) = F(h_{t-1}, u_t, \theta)$$
+Basic evolution equation: $$(h_t, x_t) = F(h_{t-1}, u_t, \theta)$$
 
 Where:
 
@@ -258,24 +257,19 @@ Where:
 
 #### Example: RNN with Sigmoid Activation
 
-Network definition:
-$$x_t = F(x_{t-1}, u_t, \theta) = W_{rec}\sigma(x_{t-1}) + W_{in}u_t + b$$
+Network definition: $$x_t = F(x_{t-1}, u_t, \theta) = W_{rec}\sigma(x_{t-1}) + W_{in}u_t + b$$
 
-Gradient analysis:
-$$\nabla_x F(x_{t-1}, u_t, \theta) = W_{rec}diag(\sigma'(x_{t-1}))$$
+Gradient analysis: $$\nabla_x F(x_{t-1}, u_t, \theta) = W_{rec}diag(\sigma'(x_{t-1}))$$
 
 ### 2. Dynamical Systems Model
 
-One-neuron recurrent network with sigmoid activation:
-$$\frac{dx}{dt} = -x(t) + \sigma(wx(t) + b) + w'u(t)$$
+One-neuron recurrent network with sigmoid activation: $$\frac{dx}{dt} = -x(t) + \sigma(wx(t) + b) + w'u(t)$$
 
-For autonomous case ($u = 0$), stable points are:
-$$\left(x, \ln\left(\frac{x}{1-x}\right)-5x\right)$$
+For autonomous case ($u = 0$), stable points are: $$\left(x, \ln\left(\frac{x}{1-x}\right)-5x\right)$$
 
 ### 3. Geometric Model
 
-Loss function example:
-$$L(x(T)) = (0.855 - x(T))^2$$
+Loss function example: $$L(x(T)) = (0.855 - x(T))^2$$
 
 ## Solutions
 
@@ -294,17 +288,13 @@ ht = ot * tanh(ct)  # Hidden state
 
 ### 2. Batch Normalization
 
-For mini-batch:
-$$\hat{x} = \frac{x - E[x]}{\sqrt{Var[x] + \epsilon}}$$
-$$y = \gamma\hat{x} + \beta$$
+For mini-batch: $$\hat{x} = \frac{x - E[x]}{\sqrt{Var[x] + \epsilon}}$$ $$y = \gamma\hat{x} + \beta$$
 
 ### 3. Residual Connections
 
-Function transformation:
-$$x \mapsto f(x) + x$$
+Function transformation: $$x \mapsto f(x) + x$$
 
-Gradient becomes:
-$$\nabla f + I$$
+Gradient becomes: $$\nabla f + I$$
 
 ### 4. Weight Initialization
 
@@ -315,8 +305,7 @@ For logistic activation function:
 
 ### 5. Gradient Clipping
 
-For exploding gradients:
-$$g_{clipped} = g_{max}\frac{g}{\|g\|} \text{ if } \|g\| > g_{max}$$
+For exploding gradients: $$g_{clipped} = g_{max}\frac{g}{\|g\|} \text{ if } \|g\| > g_{max}$$
 
 ## Advanced Considerations
 
@@ -342,17 +331,17 @@ Think of LSTM as a smart safe box with three keys:
 
 1. **Forget Gate** (First Key)
 
-   - Decides what to throw away
-   - Like cleaning your room: "Do I still need this?"
+    - Decides what to throw away
+    - Like cleaning your room: "Do I still need this?"
 
 2. **Input Gate** (Second Key)
 
-   - Decides what new information to save
-   - Like taking notes: "This is important, let me write it down"
+    - Decides what new information to save
+    - Like taking notes: "This is important, let me write it down"
 
 3. **Output Gate** (Third Key)
-   - Decides what to share/use
-   - Like deciding what to tell someone: "From everything I know, here's what's relevant"
+    - Decides what to share/use
+    - Like deciding what to tell someone: "From everything I know, here's what's relevant"
 
 ### Real-world Analogy
 
@@ -368,12 +357,12 @@ GRU is like LSTM's younger sibling - simpler but still effective. Instead of thr
 
 1. **Update Gate**
 
-   - Decides how much of the old information to keep
-   - Like updating your to-do list: combining old and new tasks
+    - Decides how much of the old information to keep
+    - Like updating your to-do list: combining old and new tasks
 
 2. **Reset Gate**
-   - Decides how much past information to forget
-   - Like starting a new page in your notebook
+    - Decides how much past information to forget
+    - Like starting a new page in your notebook
 
 ### Real-world Analogy
 
@@ -421,22 +410,22 @@ def GRU(input):
 
 1. **Text Generation**
 
-   - Writing assistant
-   - Auto-completion
+    - Writing assistant
+    - Auto-completion
 
 2. **Translation**
 
-   - Google Translate
-   - Real-time translation apps
+    - Google Translate
+    - Real-time translation apps
 
 3. **Speech Recognition**
 
-   - Siri
-   - Alexa
+    - Siri
+    - Alexa
 
 4. **Music Generation**
-   - Creating melodies
-   - Continuing musical patterns
+    - Creating melodies
+    - Continuing musical patterns
 
 # Technical Deep-Dive into LSTM and GRU
 
@@ -721,99 +710,99 @@ depends on specific use case requirements.
 
 - **Feed-Forward Networks**
 
-  - Unidirectional flow: Information flows only forward
-  - No memory of previous inputs
-  - Fixed input size
-  - Each input is processed independently
+    - Unidirectional flow: Information flows only forward
+    - No memory of previous inputs
+    - Fixed input size
+    - Each input is processed independently
 
-  ```textmate
-  Output = f(W * Input + b)
-  ```
+    ```textmate
+    Output = f(W * Input + b)
+    ```
 
 - **Recurrent Neural Networks**
 
-  - Cyclic connections: Information can flow in cycles
-  - Has memory through hidden states
-  - Variable input size
-  - Sequential processing with memory:
+    - Cyclic connections: Information can flow in cycles
+    - Has memory through hidden states
+    - Variable input size
+    - Sequential processing with memory:
 
-  ```textmate
-  ht = tanh(Whh * ht-1 + Wxh * xt + bh)
-  yt = Why * ht + by
-  ```
+    ```textmate
+    ht = tanh(Whh * ht-1 + Wxh * xt + bh)
+    yt = Why * ht + by
+    ```
 
-  Where:
+    Where:
 
-  - ht: Current hidden state
-  - ht-1: Previous hidden state
-  - xt: Current input
-  - W: Weight matrices
-  - b: Bias terms
+    - ht: Current hidden state
+    - ht-1: Previous hidden state
+    - xt: Current input
+    - W: Weight matrices
+    - b: Bias terms
 
 ## 2. Application Domains
 
 - **Feed-Forward Networks**
 
-  - Image classification
-  - Single-frame prediction
-  - Pattern recognition
-  - Fixed-size input problems
+    - Image classification
+    - Single-frame prediction
+    - Pattern recognition
+    - Fixed-size input problems
 
 - **Recurrent Networks**
-  - Time series analysis
-  - Natural language processing
-  - Speech recognition
-  - Sequential data prediction
-  - Variable-length sequences
+    - Time series analysis
+    - Natural language processing
+    - Speech recognition
+    - Sequential data prediction
+    - Variable-length sequences
 
 ## 3. Training Process
 
 - **Feed-Forward Networks**
 
-  - Standard backpropagation
-  - Each sample trained independently
-  - Simpler gradient computation
-  - Faster training generally
+    - Standard backpropagation
+    - Each sample trained independently
+    - Simpler gradient computation
+    - Faster training generally
 
 - **Recurrent Networks**
-  - Backpropagation through time (BPTT)
-  - Sequential dependency in training
-  - More complex gradient computation:
-  ```
-  ∂L/∂W = Σt (∂L/∂yt * ∂yt/∂ht * ∂ht/∂W)
-  ```
-  - More prone to vanishing/exploding gradients
-  - Generally slower training
+    - Backpropagation through time (BPTT)
+    - Sequential dependency in training
+    - More complex gradient computation:
+    ```
+    ∂L/∂W = Σt (∂L/∂yt * ∂yt/∂ht * ∂ht/∂W)
+    ```
+    - More prone to vanishing/exploding gradients
+    - Generally slower training
 
 ## 4. Memory and Context
 
 - **Feed-Forward Networks**
 
-  - No internal memory
-  - Each input-output pair is independent
-  - Context must be explicitly provided
-  - Fixed context window
+    - No internal memory
+    - Each input-output pair is independent
+    - Context must be explicitly provided
+    - Fixed context window
 
 - **Recurrent Networks**
 
-  - Internal state maintains memory
-  - Hidden state equation:
+    - Internal state maintains memory
+    - Hidden state equation:
 
-  ```
-  h(t) = f(h(t-1), x(t))
-  ```
+    ```
+    h(t) = f(h(t-1), x(t))
+    ```
 
-  - Can learn long-term dependencies
-  - Dynamic context window
-  - Variants like LSTM handle long-term dependencies:
+    - Can learn long-term dependencies
+    - Dynamic context window
+    - Variants like LSTM handle long-term dependencies:
 
-  ```textmate
-  ft = σ(Wf·[ht-1, xt] + bf)
-  it = σ(Wi·[ht-1, xt] + bi)
-  ct = ft * ct-1 + it * tanh(Wc·[ht-1, xt] + bc)
-  ot = σ(Wo·[ht-1, xt] + bo)
-  ht = ot * tanh(ct)
-  ```
+    ```textmate
+    ft = σ(Wf·[ht-1, xt] + bf)
+    it = σ(Wi·[ht-1, xt] + bi)
+    ct = ft * ct-1 + it * tanh(Wc·[ht-1, xt] + bc)
+    ot = σ(Wo·[ht-1, xt] + bo)
+    ht = ot * tanh(ct)
+    ```
 
 This fundamental architectural difference makes RNNs more suitable for sequential data processing while feed-forward
 networks excel at fixed-input pattern recognition tasks.
@@ -825,23 +814,18 @@ the feedforward and backpropagation steps used in the training phase.
 
 There are two main differences between FFNNs and RNNs. The Recurrent Neural Network uses:
 
-sequences as inputs in the training phase, and
-memory elements
-Memory is defined as the output of hidden layer neurons, which will serve as additional input to the network during the
-next training step.
+sequences as inputs in the training phase, and memory elements Memory is defined as the output of hidden layer neurons,
+which will serve as additional input to the network during the next training step.
 
 The basic three layer neural network with feedback that serve as memory inputs is called the Elman Network.
 
-The text describes the fundamental difference between Feed-Forward Neural Networks (FFNN) and Recurrent Neural
-Networks (RNN):
+The text describes the fundamental difference between Feed-Forward Neural Networks (FFNN) and Recurrent Neural Networks
+(RNN):
 
-1. For FFNN:
-   The output at any time t is a function of the current input and weights:
-   $$\bar{y_t} = F(\bar{x_t}, W)$$
+1. For FFNN: The output at any time t is a function of the current input and weights: $$\bar{y_t} = F(\bar{x_t}, W)$$
    [Equation 1]
 
-2. For RNN:
-   The output at time t depends not only on current input and weight, but also on previous inputs:
+2. For RNN: The output at time t depends not only on current input and weight, but also on previous inputs:
    $$\bar{y_t} = F(\bar{x_t}, \bar{x_{t-1}}, \bar{x_{t-2}}, \cdots, \bar{x_{t-t_0}}, W)$$
 
 The text explains the notation:
@@ -861,14 +845,9 @@ RNNs.
 
 The text explains the Unfolded Model and provides equations:
 
-State calculation:
-$$\bar{s_t} = \Phi(\bar{x_t}W_x + \bar{s_{t-1}}W_s)$$
-[Equation 3]
+State calculation: $$\bar{s_t} = \Phi(\bar{x_t}W_x + \bar{s_{t-1}}W_s)$$ [Equation 3]
 
-Output calculation can be either:
-$$\bar{y_t} = \bar{s_t}W_y$$
-or
-$$\bar{y_t} = \sigma(\bar{s_t}W_y)$$
+Output calculation can be either: $$\bar{y_t} = \bar{s_t}W_y$$ or $$\bar{y_t} = \sigma(\bar{s_t}W_y)$$
 
 The text emphasizes that this unfolded model:
 
@@ -914,60 +893,59 @@ Where:
 
 ### 2. Backward Pass
 
-The total loss is sum of losses over all time steps:
-$$E_{total} = \sum_{t=1}^{T} E_t$$
+The total loss is sum of losses over all time steps: $$E_{total} = \sum_{t=1}^{T} E_t$$
 
 Gradient calculations:
 
 1. Output layer:
 
-   $$
-   \frac{\partial E}{\partial W_{hy}} = \sum_{t=1}^{T} \frac{\partial E_t}{\partial y_t} \frac{\partial y_t}{\partial
-   W_{hy}}
-   $$
+    $$
+    \frac{\partial E}{\partial W_{hy}} = \sum_{t=1}^{T} \frac{\partial E_t}{\partial y_t} \frac{\partial y_t}{\partial
+    W_{hy}}
+    $$
 
 2. Hidden layer:
-   $$
-   \frac{\partial E}{\partial W_h} = \sum_{t=1}^{T} \sum_{k=1}^{t} \frac{\partial E_t}{\partial h_t} \frac{\partial
-   h_t}{\partial h_k} \frac{\partial h_k}{\partial W_h}
-   $$
+    $$
+    \frac{\partial E}{\partial W_h} = \sum_{t=1}^{T} \sum_{k=1}^{t} \frac{\partial E_t}{\partial h_t} \frac{\partial
+    h_t}{\partial h_k} \frac{\partial h_k}{\partial W_h}
+    $$
 
 ## Key Steps in BPTT
 
 1. **Forward Pass**
 
-   - Run the RNN forward for all time steps
-   - Store all hidden states and outputs
-   - Calculate error at each time step
+    - Run the RNN forward for all time steps
+    - Store all hidden states and outputs
+    - Calculate error at each time step
 
 2. **Backward Pass**
 
-   - Start from the last time step
-   - Compute gradients at each time step
-   - Accumulate gradients through time
+    - Start from the last time step
+    - Compute gradients at each time step
+    - Accumulate gradients through time
 
 3. **Weight Updates**
-   ```textmate
-   Wx_new = Wx - learning_rate * ∂E/∂Wx
-   Wh_new = Wh - learning_rate * ∂E/∂Wh
-   Why_new = Why - learning_rate * ∂E/∂Why
-   ```
+    ```textmate
+    Wx_new = Wx - learning_rate * ∂E/∂Wx
+    Wh_new = Wh - learning_rate * ∂E/∂Wh
+    Why_new = Why - learning_rate * ∂E/∂Why
+    ```
 
 ## Challenges
 
 1. **Vanishing Gradients**
 
-   - When backpropagating through many time steps
-   - Gradients become very small
-   - Solution: LSTM/GRU cells
+    - When backpropagating through many time steps
+    - Gradients become very small
+    - Solution: LSTM/GRU cells
 
 2. **Exploding Gradients**
-   - Gradients become very large
-   - Solution: Gradient clipping
-   ```textmate
-   if gradient > threshold:
-       gradient = gradient * (threshold/gradient_magnitude)
-   ```
+    - Gradients become very large
+    - Solution: Gradient clipping
+    ```textmate
+    if gradient > threshold:
+        gradient = gradient * (threshold/gradient_magnitude)
+    ```
 
 ## Practical Implementation
 
@@ -1007,14 +985,14 @@ def bptt(inputs, targets, hidden_state):
 
 1. **Truncated BPTT**
 
-   - Limit the number of timesteps to backpropagate through
-   - More computationally efficient
-   - May miss long-term dependencies
+    - Limit the number of timesteps to backpropagate through
+    - More computationally efficient
+    - May miss long-term dependencies
 
 2. **Full BPTT**
-   - Backpropagate through entire sequence
-   - More accurate but computationally expensive
-   - Better for capturing long-term dependencies
+    - Backpropagate through entire sequence
+    - More accurate but computationally expensive
+    - Better for capturing long-term dependencies
 
 # Training RNNs: Backpropagation Through Time (BPTT)
 
@@ -1160,12 +1138,10 @@ as opposed to once every inputs sample). We calculate the gradient for each step
 immediately. Instead, we update the weights once every fixed number of steps. This helps reduce the complexity of the
 training process and helps remove noise from the weight updates.
 
-The following is the equation used for Mini-Batch Training Using Gradient Descent:
-(where $\delta_{ij}$ represents the gradient calculated once every inputs sample, and M represents the number of
-gradients we accumulate in the process).
+The following is the equation used for Mini-Batch Training Using Gradient Descent: (where $\delta_{ij}$ represents the
+gradient calculated once every inputs sample, and M represents the number of gradients we accumulate in the process).
 
-Equation 4:
-$$\delta_{ij} = \frac{1}{M} \sum_{k=1}^M \delta_{ijk}$$
+Equation 4: $$\delta_{ij} = \frac{1}{M} \sum_{k=1}^M \delta_{ijk}$$
 
 If we backpropagate more than ~10 timesteps, the gradient will become too small. This phenomenon is known as the
 vanishing gradient problem, where the contribution of information decays geometrically over time. Therefore, the network
@@ -1217,20 +1193,20 @@ Types:
 
 1. **Word Tokenization**
 
-   - Splits text into words
-   - Handles punctuation and special cases
-   - Considers language-specific rules
+    - Splits text into words
+    - Handles punctuation and special cases
+    - Considers language-specific rules
 
 2. **Sentence Tokenization**
 
-   - Splits text into sentences
-   - Handles abbreviations
-   - Manages multiple punctuation marks
+    - Splits text into sentences
+    - Handles abbreviations
+    - Manages multiple punctuation marks
 
 3. **Subword Tokenization**
-   - Creates tokens smaller than words
-   - Useful for handling unknown words
-   - Common in modern NLP systems
+    - Creates tokens smaller than words
+    - Useful for handling unknown words
+    - Common in modern NLP systems
 
 ## 3. Stop Word Removal
 
@@ -1290,51 +1266,51 @@ Considerations:
 
 1. **Normalization**
 
-   - Always use as first step
-   - Crucial for consistency
-   - Adapt to specific needs
+    - Always use as first step
+    - Crucial for consistency
+    - Adapt to specific needs
 
 2. **Tokenization**
 
-   - Essential for most NLP tasks
-   - Choose level based on application
-   - Consider language specifics
+    - Essential for most NLP tasks
+    - Choose level based on application
+    - Consider language specifics
 
 3. **Stop Word Removal**
 
-   - Use for document classification
-   - Skip for sentiment analysis
-   - Customize list per application
+    - Use for document classification
+    - Skip for sentiment analysis
+    - Customize list per application
 
 4. **Stemming**
 
-   - Use when speed is priority
-   - Good for search applications
-   - Accept some inaccuracy
+    - Use when speed is priority
+    - Good for search applications
+    - Accept some inaccuracy
 
 5. **Lemmatization**
-   - Use when accuracy is crucial
-   - Better for meaning preservation
-   - Accept slower processing
+    - Use when accuracy is crucial
+    - Better for meaning preservation
+    - Accept slower processing
 
 ### Common Challenges:
 
 1. **Language Dependency**
 
-   - Different rules for different languages
-   - Varying effectiveness of techniques
-   - Need for language-specific tools
+    - Different rules for different languages
+    - Varying effectiveness of techniques
+    - Need for language-specific tools
 
 2. **Context Sensitivity**
 
-   - Word meaning changes with context
-   - Impact on accuracy
-   - Trade-offs between speed and precision
+    - Word meaning changes with context
+    - Impact on accuracy
+    - Trade-offs between speed and precision
 
 3. **Processing Speed**
-   - Balancing accuracy vs performance
-   - Resource constraints
-   - Scalability considerations
+    - Balancing accuracy vs performance
+    - Resource constraints
+    - Scalability considerations
 
 ### Word Embeddings
 
@@ -1347,11 +1323,10 @@ Word2Vec(opens in a new tab) and GloVe(opens in a new tab), which are trained on
 the model learns to predict the context in which a word appears, such as the surrounding words in a sentence, and uses
 this information to assign a vector representation to each word.
 
-Why word embeddings are important?
-Word embeddings have revolutionized the field of natural language processing by providing a way to represent words as
-dense vectors that capture semantic and syntactic relationships between words. These representations are particularly
-useful for downstream NLP tasks, such as text classification, sentiment analysis, and machine translation, where
-traditional techniques may struggle to capture the underlying structure of the text.
+Why word embeddings are important? Word embeddings have revolutionized the field of natural language processing by
+providing a way to represent words as dense vectors that capture semantic and syntactic relationships between words.
+These representations are particularly useful for downstream NLP tasks, such as text classification, sentiment analysis,
+and machine translation, where traditional techniques may struggle to capture the underlying structure of the text.
 
 For example, in a sentiment analysis task, word embeddings can be used to capture the sentiment of a sentence by summing
 the vector representations of the words in the sentence and passing the result through a neural network. In a machine
@@ -1410,11 +1385,9 @@ embeddings for individual words.
 <br>
 <br>
 
-Lesson Outline
-In this lesson, we will cover the following topics:
+Lesson Outline In this lesson, we will cover the following topics:
 
-LSTM Overview
-LSTM Architecture and Gates
+LSTM Overview LSTM Architecture and Gates
 
 By the end of the lesson, you'll be able to:
 
@@ -1438,9 +1411,8 @@ function). We can also see that we have a single addition.
 
 Zooming in on the neuron, we can graphically see this in the following configuration:
 
-RNN Neuron Explanation
-At the center, there is a large blue circle representing the RNN cell with the label "Phi," indicating a non-linear
-activation function. Surrounding the circle are inputs and outputs.
+RNN Neuron Explanation At the center, there is a large blue circle representing the RNN cell with the label "Phi,"
+indicating a non-linear activation function. Surrounding the circle are inputs and outputs.
 
 To the left, "S-bar-t" represents the previous hidden state multiplied by the weight matrix "W-S" and combines with an
 addition operation, shown by a plus sign inside the cell.
@@ -1450,9 +1422,10 @@ the cell to produce the next hidden state, labeled as "x-bar-t-plus-1," which ex
 W-S."
 
 <br>
-
-![image info](images/rnn_neuron.png)
-
+<div align="center">
+   <img src="images/rnn_neuron.png" width="600" height=auto/>
+   <p>figure: RNN Neuron Explanation</p>
+</div>
 <br>
 
 At the top, "y-bar-t-plus-1" shows the next output, computed from the current state using the weight matrix "W-Y."
@@ -1463,11 +1436,10 @@ mathematical operations, focusing on how input states, hidden states, and output
 The LSTM cell is a bit more complicated. If we zoom in on the cell, we can see that the mathematical configuration is
 the following:
 
-LSTM Cell Explanation
-The diagram is enclosed within a dark rectangle representing the LSTM unit. On the left, the input "x-sub-t" enters the
-cell from the bottom left. Several key operations occur within the cell, including the use of the sigmoid function,
-represented by "sigma," and the hyperbolic tangent function, represented by "tanh," both essential for controlling
-information flow.
+LSTM Cell Explanation The diagram is enclosed within a dark rectangle representing the LSTM unit. On the left, the input
+"x-sub-t" enters the cell from the bottom left. Several key operations occur within the cell, including the use of the
+sigmoid function, represented by "sigma," and the hyperbolic tangent function, represented by "tanh," both essential for
+controlling information flow.
 
 At the top, the previous cell state "S-sub-t" is depicted flowing through, being modified by operations involving
 multiplication and addition. The cell has several gates: the forget gate, input gate, and output gate, each interacting
@@ -1476,9 +1448,10 @@ showing information flow through the LSTM, including multiplications and additio
 splitting based on the gate operations.
 
 <br>
-
-![image info](images/lstm_neuron.png)
-
+<div align="center">
+   <img src="images/lstm_neuron.png" width="600" height=auto/>
+   <p>figure: LSTM Neuron Explanation</p>
+</div>
 <br>
 
 The activation functions are visually separated, with "tanh" applied towards the right side and "sigma" present in the
@@ -1513,21 +1486,24 @@ Outputs
 2. New Short-Term Memory
 
 <br>
-
-![image info](images/prediction.png)
-
+<div align="center">
+   <img src="images/prediction.png" width="600" height=auto/>
+   <p>figure: Prediction Illustration</p>
+</div>
 <br>
 
 <br>
-
-![image info](images/gate.png)
-
+<div align="center">
+   <img src="images/gate.png" width="600" height=auto/>
+   <p>figure: Gate Explanation</p>
+</div>
 <br>
 
 <br>
-
-![image info](images/gate_1.png)
-
+<div align="center">
+   <img src="images/gate_1.png" width="600" height=auto/>
+   <p>figure: Gate Explanation</p>
+</div>
 <br>
 
 # RNN Lecture Notes: Gates in LSTM Architecture
@@ -1713,9 +1689,8 @@ def visualize_gates(lstm_layer, input_sequence):
 
 # Quiz Question: LSTM Memory Update Mechanism
 
-**Question:**
-The Long Term Memory and Short Term Memory are updated by a method where...
-(Select the response that best completes the sentence)
+**Question:** The Long Term Memory and Short Term Memory are updated by a method where... (Select the response that best
+completes the sentence)
 
 **Options:**
 
@@ -1733,14 +1708,14 @@ In LSTM networks, the memory update process works as follows:
 
 1. **Remember Gate (Cell State Update)**:
 
-   - Takes both Long Term Memory (LTM/Cell State) and Short Term Memory (STM/Hidden State)
-   - Formula: `Ct = ft * Ct-1 + it * C̃t`
-   - Determines what information to keep and what to update in the LTM
+    - Takes both Long Term Memory (LTM/Cell State) and Short Term Memory (STM/Hidden State)
+    - Formula: `Ct = ft * Ct-1 + it * C̃t`
+    - Determines what information to keep and what to update in the LTM
 
 2. **USE Gate (Output Gate)**:
-   - Controls the Short Term Memory update
-   - Formula: `ht = ot * tanh(Ct)`
-   - Filters the cell state to create the new hidden state (STM)
+    - Controls the Short Term Memory update
+    - Formula: `ht = ot * tanh(Ct)`
+    - Filters the cell state to create the new hidden state (STM)
 
 The process is sequential:
 
@@ -1758,8 +1733,7 @@ mechanism of LSTMs.
 
 # Quiz Question: Important Components of LSTM Architecture
 
-**Question:**
-Check the important pieces of an LSTM architecture. (Multiple correct responses)
+**Question:** Check the important pieces of an LSTM architecture. (Multiple correct responses)
 
 **Options and Their Status:**
 
@@ -1779,58 +1753,60 @@ Let's analyze each component and why it's correct or incorrect:
 
 1. **Input Vector, LTM, and STM**
 
-   - Essential inputs for LSTM processing
-   - LTM (Long-Term Memory) stores long-term dependencies
-   - STM (Short-Term Memory) handles immediate context
+    - Essential inputs for LSTM processing
+    - LTM (Long-Term Memory) stores long-term dependencies
+    - STM (Short-Term Memory) handles immediate context
 
 2. **Four Gates (Forget, Learn, Remember, Use)**
 
-   - Forget Gate: Decides what to discard
-   - Learn Gate: Determines new information to store
-   - Remember Gate: Updates cell state
-   - Use Gate: Controls output information
+    - Forget Gate: Decides what to discard
+    - Learn Gate: Determines new information to store
+    - Remember Gate: Updates cell state
+    - Use Gate: Controls output information
 
 3. **Hidden State**
 
-   - Represents short-term memory
-   - Carries immediate context information
-   - Essential for sequence processing
+    - Represents short-term memory
+    - Carries immediate context information
+    - Essential for sequence processing
 
 4. **LTM and STM Outputs**
 
-   - Critical for information flow
-   - Enables both short and long-term memory retention
-   - Necessary for next time step processing
+    - Critical for information flow
+    - Enables both short and long-term memory retention
+    - Necessary for next time step processing
 
 5. **Cell State**
-   - Core component for maintaining long-term dependencies
-   - Acts as the memory highway through time
-   - Essential for solving vanishing gradient problem
+    - Core component for maintaining long-term dependencies
+    - Acts as the memory highway through time
+    - Essential for solving vanishing gradient problem
 
 **Incorrect Components:**
 
 1. **Modulation Factor**
 
-   - Not a standard LSTM component
-   - Might be confused with gate multipliers
+    - Not a standard LSTM component
+    - Might be confused with gate multipliers
 
 2. **Normalization Gate**
-   - Not part of standard LSTM architecture
-   - While normalization can be used in LSTMs, it's not a gate component
+    - Not part of standard LSTM architecture
+    - While normalization can be used in LSTMs, it's not a gate component
 
 This distinction shows that LSTM's power comes from its carefully designed memory and gate mechanisms, not from
 additional processing components.
 
 <br>
-
-![image info](images/rnn_architecture.png)
-
+<div align="center">
+   <img src="images/rnn_architecture.png" width="600" height=auto/>
+   <p>figure: RNN Architecture</p>
+</div>
 <br>
 
 <br>
-
-![image info](images/lstm_architecture.png)
-
+<div align="center">
+   <img src="images/lstm_architecture.png" width="600" height=auto/>
+   <p>figure: LSTM Architecture</p>
+</div>
 <br>
 
 ### Learn Gate
@@ -1850,9 +1826,10 @@ Note: The equation shows a Learn Gate equation where:
 - Both use weights ($W$) and biases ($b$) with previous short-term memory ($STM_{t-1}$) and current input ($E_t$)
 
 <br>
-
-![image info](images/learn_gate.png)
-
+<div align="center">
+   <img src="images/learn_gate.png" width="600" height=auto/>
+   <p>figure: Learn Gate Explanation</p>
+</div>
 <br>
 
 ### Forget Gate
@@ -1861,13 +1838,13 @@ Note: The equation shows a Learn Gate equation where:
 
 The output of the Forget Gate is $LTM_{t-1}f_t$ where:
 
-**Equation 2:**
-$$f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$$
+**Equation 2:** $$f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$$
 
 <br>
-
-![image info](images/forget_gate.png)
-
+<div align="center">
+   <img src="images/forget_gate.png" width="600" height=auto/>
+   <p>figure: Forget Gate Explanation</p>
+</div>
 <br>
 
 ### Remember Gate
@@ -1876,15 +1853,15 @@ $$f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$$
 
 The output of the Remember Gate is:
 
-**Equation 3:**
-$$LTM_{t-1}f_t + N_ti_t$$
+**Equation 3:** $$LTM_{t-1}f_t + N_ti_t$$
 
 $(N_t, i_t \text{ and } f_t \text{ are calculated in equations 1 and 2})$
 
 <br>
-
-![image info](images/remember_gate.png)
-
+<div align="center">
+   <img src="images/remember_gate.png" width="600" height=auto/>
+   <p>figure: Remember Gate Explanation</p>
+</div>
 <br>
 
 ### Use Gate
@@ -1893,9 +1870,7 @@ $(N_t, i_t \text{ and } f_t \text{ are calculated in equations 1 and 2})$
 
 The output of the Use Gate is $U_tV_t$ where:
 
-**Equation 4:**
-$$U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$$
-$$V_t = \sigma(W_v[STM_{t-1}, E_t] + b_v)$$
+**Equation 4:** $$U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$$ $$V_t = \sigma(W_v[STM_{t-1}, E_t] + b_v)$$
 
 These equations represent the mathematical formulation of how information flows through each gate in an LSTM cell, with:
 
@@ -1908,9 +1883,10 @@ These equations represent the mathematical formulation of how information flows 
 - $E_t$ representing the input at time t
 
 <br>
-
-![image info](images/use_gate.png)
-
+<div align="center">
+   <img src="images/use_gate.png" width="600" height=auto/>
+   <p>figure: Use Gate Explanation</p>
+</div>
 <br>
 
 # Quiz: LSTM Gate Functions
@@ -1928,26 +1904,26 @@ These equations represent the mathematical formulation of how information flows 
 
 1. **Forget Gate**
 
-   - Primary function: Information filtering
-   - Equation: $f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$
-   - Acts as the memory "clearance" mechanism
+    - Primary function: Information filtering
+    - Equation: $f_t = \sigma(W_f[STM_{t-1}, E_t] + b_f)$
+    - Acts as the memory "clearance" mechanism
 
 2. **Learn Gate**
 
-   - Primary function: Information acquisition
-   - Updates STM with new data
-   - Essential for incorporating new information
+    - Primary function: Information acquisition
+    - Updates STM with new data
+    - Essential for incorporating new information
 
 3. **Remember Gate**
 
-   - Primary function: Memory persistence
-   - Equation: $LTM_{t-1}f_t + N_ti_t$
-   - Manages long-term information storage
+    - Primary function: Memory persistence
+    - Equation: $LTM_{t-1}f_t + N_ti_t$
+    - Manages long-term information storage
 
 4. **Use Gate**
-   - Primary function: Output control
-   - Equation: $U_tV_t$ where $U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$
-   - Controls information flow to the next layer
+    - Primary function: Output control
+    - Equation: $U_tV_t$ where $U_t = \tanh(W_uLTM_{t-1}f_t + b_u)$
+    - Controls information flow to the next layer
 
 These gates work together to create LSTM's ability to maintain and manage both short-term and long-term dependencies in
 sequential data.
@@ -1997,19 +1973,19 @@ Input -> Embedding -> Encoder Stack -> Decoder Stack -> Output
 
 1. **Encoder**
 
-   - Multiple identical layers
-   - Each layer has:
-     - Multi-head attention
-     - Feed-forward network
-     - Layer normalization
-     - Residual connections
+    - Multiple identical layers
+    - Each layer has:
+        - Multi-head attention
+        - Feed-forward network
+        - Layer normalization
+        - Residual connections
 
 2. **Decoder**
-   - Similar to encoder but with additional layer
-   - Components:
-     - Masked multi-head attention
-     - Encoder-decoder attention
-     - Feed-forward network
+    - Similar to encoder but with additional layer
+    - Components:
+        - Masked multi-head attention
+        - Encoder-decoder attention
+        - Feed-forward network
 
 ## 3. Key Mechanisms
 
@@ -2051,19 +2027,19 @@ i + 1) = cos(pos / 10000 ^ (2i / d_model))
 
 1. Input Processing
 
-   - Tokenization
-   - Embedding
-   - Positional encoding
+    - Tokenization
+    - Embedding
+    - Positional encoding
 
 2. Loss Calculation
 
-   ```textmate
-   loss = cross_entropy(predictions, targets)
-   ```
+    ```textmate
+    loss = cross_entropy(predictions, targets)
+    ```
 
 3. Optimization
-   - Adam optimizer
-   - Learning rate with warmup
+    - Adam optimizer
+    - Learning rate with warmup
 
 ### 4.2 Training Techniques
 
@@ -2077,8 +2053,7 @@ i + 1) = cos(pos / 10000 ^ (2i / d_model))
 ### 5.1 Self-Attention
 
 - Allows input to attend to itself
-- Formula:
-  $$SelfAttention(X) = Attention(XW^Q, XW^K, XW^V)$$
+- Formula: $$SelfAttention(X) = Attention(XW^Q, XW^K, XW^V)$$
 
 ### 5.2 Cross-Attention
 
@@ -2115,17 +2090,17 @@ class TransformerModel(nn.Module):
 
 1. BERT
 
-   - Bidirectional encoder
-   - Pre-training + Fine-tuning
+    - Bidirectional encoder
+    - Pre-training + Fine-tuning
 
 2. GPT
 
-   - Decoder-only architecture
-   - Autoregressive training
+    - Decoder-only architecture
+    - Autoregressive training
 
 3. T5
-   - Text-to-text framework
-   - Unified approach to NLP tasks
+    - Text-to-text framework
+    - Unified approach to NLP tasks
 
 ### 7.2 Recent Improvements
 
@@ -2292,9 +2267,9 @@ scores = scores.masked_fill(mask, float('-inf'))
 
 - Quadratic with sequence length
 - Solutions:
-  - Sparse attention
-  - Linear attention
-  - Local attention
+    - Sparse attention
+    - Linear attention
+    - Local attention
 
 #### 6.2 Implementation Tips
 
@@ -2349,38 +2324,30 @@ self-attention, RNNs process the sequence in a linear fashion, with each element
 its position in the sequence. As a result, these have a limited attention span and cannot “remember” the context from an
 earlier part of the sequence or conversation. Let’s see this with a visual.
 
-Summary
-So while LSTMs have been very effective in handling sequential data, they do have some limitations:
+Summary So while LSTMs have been very effective in handling sequential data, they do have some limitations:
 
 Limited attention span - They struggle to capture long term dependencies in sequences as they maintain a limited amount
-of information in memory.
-Computation efficiency - LSTMs are computationally expensive to train.
-Handling multiple sequences - LSTMs are designed to handle one sequence at a time.
-Transformers overcome all these limitations of LSTM by using self-attention and parallel processing.
+of information in memory. Computation efficiency - LSTMs are computationally expensive to train. Handling multiple
+sequences - LSTMs are designed to handle one sequence at a time. Transformers overcome all these limitations of LSTM by
+using self-attention and parallel processing.
 
 Transformer models have been shown to achieve state-of-the-art performance on a wide range of NLP tasks, including:
 
-language translation
-text generation
-question answering
-sentiment analysis
-named-entity recognition
-This has led to their widespread adoption in industry and academia, and they are now the dominant approach for many NLP
-applications. Their impact has been particularly significant in the development of large-scale language models, such as
-Bidirectional Encoder Representation Transformer (BERT), and Generative Pre-trained Transformer (GPT), which have
-revolutionized the field of NLP across a wide range of tasks.
+language translation text generation question answering sentiment analysis named-entity recognition This has led to
+their widespread adoption in industry and academia, and they are now the dominant approach for many NLP applications.
+Their impact has been particularly significant in the development of large-scale language models, such as Bidirectional
+Encoder Representation Transformer (BERT), and Generative Pre-trained Transformer (GPT), which have revolutionized the
+field of NLP across a wide range of tasks.
 
-Open-source APIs for Transformers
-The availability of these powerful transformer models can be found in numerous open-source APIs are currently accessible
-from various companies, including OpenAI, TensorFlow Hub, AWS, Google Cloud AI Platform, and Hugging Face Transformers.
-These APIs offer convenient integration into the data pipelines of businesses, allowing them to take advantage of
-pre-existing transformer models in deep learning and data science.
+Open-source APIs for Transformers The availability of these powerful transformer models can be found in numerous
+open-source APIs are currently accessible from various companies, including OpenAI, TensorFlow Hub, AWS, Google Cloud AI
+Platform, and Hugging Face Transformers. These APIs offer convenient integration into the data pipelines of businesses,
+allowing them to take advantage of pre-existing transformer models in deep learning and data science.
 
 # Quiz: Multi-Head Attention in Transformer Models
 
-**Question:**
-You are working on a natural language processing project and you are considering using a transformer model for your
-task. What is multi-head attention and how does it help improve the performance of a transformer model?
+**Question:** You are working on a natural language processing project and you are considering using a transformer model
+for your task. What is multi-head attention and how does it help improve the performance of a transformer model?
 
 **Options:**
 
@@ -2406,45 +2373,45 @@ Multi-head attention works by:
 
 1. **Multiple Attention Perspectives**
 
-   - Creates multiple sets of Query (Q), Key (K), and Value (V) matrices
-   - Each head learns different aspects of relationships
-   - Formal representation: $MultiHead(Q,K,V) = Concat(head_1,...,head_h)W^O$
+    - Creates multiple sets of Query (Q), Key (K), and Value (V) matrices
+    - Each head learns different aspects of relationships
+    - Formal representation: $MultiHead(Q,K,V) = Concat(head_1,...,head_h)W^O$
 
 2. **Parallel Processing**
 
-   ```textmate
-   def multi_head_attention(query, key, value, num_heads):
-       # Split into heads
-       Q = split_into_heads(query, num_heads)
-       K = split_into_heads(key, num_heads)
-       V = split_into_heads(value, num_heads)
+    ```textmate
+    def multi_head_attention(query, key, value, num_heads):
+        # Split into heads
+        Q = split_into_heads(query, num_heads)
+        K = split_into_heads(key, num_heads)
+        V = split_into_heads(value, num_heads)
 
-       # Calculate attention for each head
-       attention_per_head = []
-       for i in range(num_heads):
-           attention_per_head.append(
-               scaled_dot_product_attention(Q[i], K[i], V[i])
-           )
+        # Calculate attention for each head
+        attention_per_head = []
+        for i in range(num_heads):
+            attention_per_head.append(
+                scaled_dot_product_attention(Q[i], K[i], V[i])
+            )
 
-       return concatenate_heads(attention_per_head)
-   ```
+        return concatenate_heads(attention_per_head)
+    ```
 
 3. **Benefits**
-   - Captures different types of relationships
-   - Models both local and global dependencies
-   - Improves model's understanding of context
-   - Enhances feature representation
+    - Captures different types of relationships
+    - Models both local and global dependencies
+    - Improves model's understanding of context
+    - Enhances feature representation
 
 Why other options are incorrect:
 
 1. Option 1 is incorrect because:
 
-   - Multi-head attention isn't about processing multiple sequences
-   - It's about multiple viewpoints of the same sequence
+    - Multi-head attention isn't about processing multiple sequences
+    - It's about multiple viewpoints of the same sequence
 
 2. Option 3 is incorrect because:
-   - Confuses multi-head attention with skip connections
-   - Layer information combination is a different mechanism
+    - Confuses multi-head attention with skip connections
+    - Layer information combination is a different mechanism
 
 The key advantage is the model's ability to:
 
@@ -2461,10 +2428,10 @@ models.
 
 At a high level, the transformer architecture consists of an encoder and a decoder.
 
-The encoder takes in a sequence of input tokens and produces a sequence of hidden representations
-The decoder takes in the encoder's output and generates a sequence of output tokens.
-The key innovation of transformers is the use of self-attention mechanisms, which allow the model to selectively focus
-on different parts of the input sequence when computing the hidden representations.
+The encoder takes in a sequence of input tokens and produces a sequence of hidden representations The decoder takes in
+the encoder's output and generates a sequence of output tokens. The key innovation of transformers is the use of
+self-attention mechanisms, which allow the model to selectively focus on different parts of the input sequence when
+computing the hidden representations.
 
 The self-attention mechanism works by computing attention weights between each input token and all other input tokens
 and using these weights to compute a weighted sum of the input token embeddings. The attention weights are computed
@@ -2479,25 +2446,23 @@ layers, each consisting of a self-attention mechanism and a feedforward neural n
 EncoderLayer(x)=LayerNorm(x+SelfAttention(x)+FeedForward(x))
 
 <br>
-
-![image info](images/transformer_architecture.png)
-
+<div align="center">
+   <img src="images/transformer_architecture.png" width="600" height=auto/>
+   <p>figure: Transformer Architecture</p>
+</div>
 <br>
 
-Key, Value, and Query
-Let's try to understand the Key, Value, and Query before discussing the Decoder.
+Key, Value, and Query Let's try to understand the Key, Value, and Query before discussing the Decoder.
 
 The key, value, and query vectors are used in the self-attention mechanism to help the model selectively attend to
 different parts of the input sequence.
 
 Key: You can think of the key vectors as a set of reference points the model uses to decide which parts of the input
-sequence are important.
-Value: The value vectors are the actual information that the model associates with each key vector.
-Query: Query vectors are used to determine how much attention to give to each key-value pair.
-Example: imagine you are trying to summarize a long article. The key vectors could represent the most important
-sentences or phrases in the article, while the value vectors could represent the actual content of those sentences. The
-query vectors would then be used to decide which of these key-value pairs are most relevant to the task of
-summarization.
+sequence are important. Value: The value vectors are the actual information that the model associates with each key
+vector. Query: Query vectors are used to determine how much attention to give to each key-value pair. Example: imagine
+you are trying to summarize a long article. The key vectors could represent the most important sentences or phrases in
+the article, while the value vectors could represent the actual content of those sentences. The query vectors would then
+be used to decide which of these key-value pairs are most relevant to the task of summarization.
 
 The self-attention mechanism works by computing a dot product between the query vector and each key vector, which
 produces a set of attention weights that indicate how much attention to give to each value vector. The resulting
@@ -2520,9 +2485,10 @@ are used to weight the values in V. The output of the self-attention mechanism i
 $$MultiHead(Q, K, V) = Concat(head_1, ..., head_h)W^O$$
 
 <br>
-
-![image info](images/self_attention.png)
-
+<div align="center">
+   <img src="images/self_attention.png" width="600" height=auto/>
+   <p>figure: Self-Attention Mechanism</p>
+</div>
 <br>
 
 ### Decoder
@@ -2539,66 +2505,48 @@ handle tasks such as language translation where the input and output sequences m
 ### HuggingFace
 
 Hugging Face is an open-source company that provides NLP tools and models for developers and researchers. Learn more at
-their website(opens in a new tab).
-Their flagship product is the Hugging Face Transformers library, which is a Python-based framework for building,
-training, and deploying state-of-the-art NLP models. Explore the library on GitHub(opens in a new tab)
-Hugging Face Transformers provides pre-trained models for a variety of NLP tasks, such as text classification, question
-answering, machine translation, and text generation. Check out their model hub(opens in a new tab) to browse pre-trained
-models.
-The library allows developers to quickly and easily integrate powerful NLP models into their applications using a simple
-API for loading pre-trained models. See the documentation(opens in a new tab) for more details.
-The library includes a range of tools for fine-tuning models on custom datasets, making it easy to adapt models to
-specific tasks.
-Hugging Face has a large and active community that provides support, documentation, and a range of resources to help
-developers and researchers get the most out of the library. Join the community on their forums(opens in a new tab).
-In addition to pre-trained models and tools, Hugging Face also provides datasets, evaluation metrics, and benchmarking
-tools for NLP. Explore their datasets(opens in a new tab) and evaluation tools(opens in a new tab) on their website.
-Hugging Face is a valuable resource for anyone working with NLP models, whether you are a developer looking to integrate
-models into your applications or a researcher looking to explore the state of the art in NLP. See how Hugging Face
-models have been used in various applications on their blog(opens in a new tab).
+their website(opens in a new tab). Their flagship product is the Hugging Face Transformers library, which is a
+Python-based framework for building, training, and deploying state-of-the-art NLP models. Explore the library on
+GitHub(opens in a new tab) Hugging Face Transformers provides pre-trained models for a variety of NLP tasks, such as
+text classification, question answering, machine translation, and text generation. Check out their model hub(opens in a
+new tab) to browse pre-trained models. The library allows developers to quickly and easily integrate powerful NLP models
+into their applications using a simple API for loading pre-trained models. See the documentation(opens in a new tab) for
+more details. The library includes a range of tools for fine-tuning models on custom datasets, making it easy to adapt
+models to specific tasks. Hugging Face has a large and active community that provides support, documentation, and a
+range of resources to help developers and researchers get the most out of the library. Join the community on their
+forums(opens in a new tab). In addition to pre-trained models and tools, Hugging Face also provides datasets, evaluation
+metrics, and benchmarking tools for NLP. Explore their datasets(opens in a new tab) and evaluation tools(opens in a new
+tab) on their website. Hugging Face is a valuable resource for anyone working with NLP models, whether you are a
+developer looking to integrate models into your applications or a researcher looking to explore the state of the art in
+NLP. See how Hugging Face models have been used in various applications on their blog(opens in a new tab).
 
 ### Benefits of using pre-trained models
 
 Pre-trained models are already trained on vast amounts of data and have learned to perform well on a wide range of NLP
 tasks. This saves a lot of time and resources that would otherwise be spent on data collection, pre-processing, and
-model training.
-Hugging Face provides access to a large collection of pre-trained models for various NLP tasks, which are continually
-updated and improved. This allows developers and researchers to choose the best model for their specific use case and
-avoid the risk of building a suboptimal model from scratch.
-The Hugging Face Transformers library provides a simple API for loading and using pre-trained models, making it easy to
-integrate them into custom applications without requiring deep knowledge of NLP or machine learning.
+model training. Hugging Face provides access to a large collection of pre-trained models for various NLP tasks, which
+are continually updated and improved. This allows developers and researchers to choose the best model for their specific
+use case and avoid the risk of building a suboptimal model from scratch. The Hugging Face Transformers library provides
+a simple API for loading and using pre-trained models, making it easy to integrate them into custom applications without
+requiring deep knowledge of NLP or machine learning.
 
 ### Transformer Architecture Benefits
 
-Faster to Train
-The replacement of recurrent cells with feedforward networks improves the parallelization of Transformers. Current
-high-performance computing systems are designed to work well with this type of parallelization.
+Faster to Train The replacement of recurrent cells with feedforward networks improves the parallelization of
+Transformers. Current high-performance computing systems are designed to work well with this type of parallelization.
 
-Better Performance
-Transformers offer better performance than RNNs across most natural language tasks. Therefore, we can use them to solve
-new problems.
+Better Performance Transformers offer better performance than RNNs across most natural language tasks. Therefore, we can
+use them to solve new problems.
 
-Versatility
-The Transformer architecture can move between different domains like NLP and Computer Vision.
+Versatility The Transformer architecture can move between different domains like NLP and Computer Vision.
 
-BERT Overview
-BERT (Bidirectional Encoder Representations from Transformers) is a Machine Learning (ML) model for natural language
-processing developed by Google in 2018. BERT is a versatile model that can handle a range of natural language
-processing (NLP) tasks, including but not limited to:
+BERT Overview BERT (Bidirectional Encoder Representations from Transformers) is a Machine Learning (ML) model for
+natural language processing developed by Google in 2018. BERT is a versatile model that can handle a range of natural
+language processing (NLP) tasks, including but not limited to:
 
-Sentiment analysis
-Named entity recognition
-Question answering
-Language inference
-Text classification
-Paraphrasing
-Text summarization
-Machine translation
-Language modeling
-Text completion
-Entity linking
-Coreference resolution
-BERT's ability to perform well on these tasks makes it a valuable tool for many NLP applications.
+Sentiment analysis Named entity recognition Question answering Language inference Text classification Paraphrasing Text
+summarization Machine translation Language modeling Text completion Entity linking Coreference resolution BERT's ability
+to perform well on these tasks makes it a valuable tool for many NLP applications.
 
 Steps to Finetune BERT
 
@@ -2628,8 +2576,7 @@ def tokenize_function(examples):
 ```
 
 3. Now, we can load and preprocess our dataset. Remember that we will use the datasets package to load data. The
-   datasets
-   package has many inbuilt datasets available, and you can find a list here
+   datasets package has many inbuilt datasets available, and you can find a list here
 
 4. The tokenizer we select needs to be the same as the model we are using. There are many pre-trained models available
    in transformers and you can find a list of them here(opens in a new tab). In the code below, you can see that I am
@@ -2648,8 +2595,9 @@ small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(10
 # full_eval_dataset = tokenized_datasets["test"]
 ```
 
-5. Now that we have written our data preprocessing code, we can download our model and start to train it. We will use the AutoModelForSequenceClassification API to fetch the pre-trained bert-base-cased model. We also need to specify the number of classes in our data.
-   Finally, we can train and evaluate the model using a Trainer object.
+5. Now that we have written our data preprocessing code, we can download our model and start to train it. We will use
+   the AutoModelForSequenceClassification API to fetch the pre-trained bert-base-cased model. We also need to specify
+   the number of classes in our data. Finally, we can train and evaluate the model using a Trainer object.
 
 ```textmate
 model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=<your labels>)
@@ -2668,7 +2616,8 @@ trainer.train()
 trainer.evaluate()
 ```
 
-Note: Fine tuning BERT takes a long time (even on GPUs), hence we are not providing a workspace for this demo. Please try this on your local machine.
+Note: Fine tuning BERT takes a long time (even on GPUs), hence we are not providing a workspace for this demo. Please
+try this on your local machine.
 
 ### The Science Behind BERT: How it Learns and Processes Language
 
@@ -2677,17 +2626,16 @@ To achieve its remarkable performance, BERT utilizes the following components:
 Extensive training data
 
 BERT was trained on a colossal dataset of 3.3 billion words, which is one of the main factors that contributed to its
-success. Specifically, it was trained on two vast datasets: Wikipedia (about 2.5 billion words) and Google's
-BooksCorpus (about 800 million words). By using these vast and varied datasets, BERT gained a deep understanding of
-natural language.
+success. Specifically, it was trained on two vast datasets: Wikipedia (about 2.5 billion words) and Google's BooksCorpus
+(about 800 million words). By using these vast and varied datasets, BERT gained a deep understanding of natural
+language.
 
 MLM (Masked Language Modeling)
 
 MLM is a technique used by BERT to learn about the relationships between words in a sentence. In this process, BERT is
 trained to predict what a masked word should be based on the other words in the sentence.
 
-Example:
-Let's say we have the following sentence: "The cat sat on the [MASK]".
+Example: Let's say we have the following sentence: "The cat sat on the [MASK]".
 
 During pre-training, BERT may randomly mask one of the words in the sentence. In this case, let's say BERT masks the
 word "mat". The sentence would then look like this: "The cat sat on the [MASK]".
@@ -2705,14 +2653,11 @@ NSP is another technique used by BERT during pre-training to help it better unde
 language. In this process, BERT is trained to predict whether two sentences are likely to appear together in a piece of
 text.
 
-Example:
-Let's say we have two sentences:
+Example: Let's say we have two sentences:
 
-"The cat sat on the mat."
-"It was a beautiful day outside."
-During pre-training, BERT may be given these two sentences and asked to predict whether they are likely to appear
-together in a piece of text. In this case, the answer would be "no" since the two sentences do not seem to be related to
-each other.
+"The cat sat on the mat." "It was a beautiful day outside." During pre-training, BERT may be given these two sentences
+and asked to predict whether they are likely to appear together in a piece of text. In this case, the answer would be
+"no" since the two sentences do not seem to be related to each other.
 
 BERT is trained using many different pairs of sentences, some of which are related and some of which are not. By
 learning to predict whether pairs of sentences are related or not, BERT gains a better understanding of the overall
@@ -2726,9 +2671,10 @@ many natural language processing tasks such as question answering and text class
 The above table provides some key specifications of two different versions of the BERT model: BERTbase and BERTlarge.
 
 <br>
-
-![image info](images/bert.png)
-
+<div align="center">
+   <img src="images/bert.png" width="600" height=auto/>
+   <p>figure: BERT Architecture</p>
+</div>
 <br>
 
 Transformer Layers: This refers to the number of transformer layers in the BERT model. Transformer layers are a key
@@ -2767,9 +2713,4 @@ language patterns and generate higher-quality output across a broader range of t
 fine-tuned with smaller datasets, making it a powerful tool for specialized applications in various domains. Despite its
 impressive capabilities, GPT-4 still faces challenges in controlling generated content, ensuring factual accuracy, and
 mitigating biases present in training data.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-<br>
-
-![image info](images/bert.png)
-
-<br>
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
