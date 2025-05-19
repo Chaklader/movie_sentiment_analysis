@@ -70,7 +70,7 @@ datasets/
 # Jupyter Notebook
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
-*.ipynb
+
 
 # OS specific
 .DS_Store
