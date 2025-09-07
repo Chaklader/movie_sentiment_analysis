@@ -11,6 +11,11 @@ dist/
 downloads/
 eggs/
 .eggs/
+
+
+data/glove.6B.50d.txt
+data/glove.6B.50d.txt.zip
+
 lib/
 lib64/
 parts/
@@ -113,3 +118,6 @@ site/
 *.mp4
 *.avi
 *.mov
+
+
+
