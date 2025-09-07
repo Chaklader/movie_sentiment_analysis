@@ -12,9 +12,8 @@ downloads/
 eggs/
 .eggs/
 
-
-data/glove.6B.50d.txt
-data/glove.6B.50d.txt.zip
+data/*.txt
+data/*.zip
 
 lib/
 lib64/
